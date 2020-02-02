@@ -6,6 +6,8 @@
 \usepackage{listings}
 \lstset{basicstyle=\ttfamily\footnotesize,breaklines=true}
 
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+
 \begin{document}
 
 \maketitle
@@ -154,6 +156,7 @@ Das ``Reduzieren'' von Problem aus der Realität auf Probleme z.B. der Graphenth
 
 Es gibt zwei Algorithmen, die hier betrachtet werden: Die Seitensprung-Dynamik und Gale-Shapley-Algorithmus.
 
+\subsubsection{Seitensprung-Dynamik}
 \begin{algo}
 	\textbf{Eingabe:} Beliebiges Matching $M$
 	
@@ -167,6 +170,177 @@ Es gibt zwei Algorithmen, die hier betrachtet werden: Die Seitensprung-Dynamik u
 	\textbf{RETURN} $M^*$
 	
 \end{algo}
+
+Folgender Graph zeigt eine Iteration innerhalb der \textbf{WHILE} Schleife:
+
+\begin{halfboxl}
+	\vspace{-\baselineskip}	
+	\begin{center}
+		\begin{tikzpicture}
+		\node[draw,circle,minimum size=5mm, label = left:{$X,Z,W,Y$}] (A) at (0,0) {$A$};
+		\node[draw,circle,minimum size=5mm, label = left:{$Y,W,X,Z$}] (B) at (0,-2) {$B$};
+		\node[draw,circle,minimum size=5mm, label = left:{$Z,X,Y,W$}] (C) at (0,-4) {$C$};
+		\node[draw,circle,minimum size=5mm, label = left:{$W,Y,Z,X$}] (D) at (0,-6) {$D$};
+		
+		\node[draw,circle,minimum size=5mm, label = right:{$A,B,C,D$}] (W) at (2,0) {$W$};
+		\node[draw,circle,minimum size=5mm, label = right:{$B,D,C,A$}] (X) at (2,-2) {$X$};
+		\node[draw,circle,minimum size=5mm, label = right:{$C,A,D,B$}] (Y) at (2,-4) {$Y$};
+		\node[draw,circle,minimum size=5mm, label = right:{$D,B,A,C$}] (Z) at (2,-6) {$Z$};
+		\node[red] (m) at (0,0.55) {m};
+		\node[red] (w) at (2.1,-5.45) {w};
+		\node[red] (m2) at (0,-3.45) {m'};
+		\node[red] (w2) at (2,0.55) {w'};
+		
+		%\foreach \X [count=\Y from 2] in {1, ..., 3}{
+		%	\draw[-] (\X) -- (\Y);
+		%}
+		\draw[thick] (A) -- (W);
+		\draw[thick] (B) -- (X);
+		\draw[thick] (C) -- (Z);
+		\draw[thick] (D) -- (Y);
+		\draw[thick,red] (A) -- (Z);
+		\end{tikzpicture}
+	\end{center}
+
+	$\{A,Z\}$ sind unzufrieden. Löse Verbindung $\{A,W\}$ und $\{C,Z\}$ auf und ...
+\end{halfboxl}%
+\begin{halfboxr}
+	\vspace{-\baselineskip}	
+	\begin{center}
+		\begin{tikzpicture}
+		\node[draw,circle,minimum size=5mm, label = left:{$X,Z,W,Y$}] (A) at (0,0) {$A$};
+		\node[draw,circle,minimum size=5mm, label = left:{$Y,W,X,Z$}] (B) at (0,-2) {$B$};
+		\node[draw,circle,minimum size=5mm, label = left:{$Z,X,Y,W$}] (C) at (0,-4) {$C$};
+		\node[draw,circle,minimum size=5mm, label = left:{$W,Y,Z,X$}] (D) at (0,-6) {$D$};
+		
+		\node[draw,circle,minimum size=5mm, label = right:{$A,B,C,D$}] (W) at (2,0) {$W$};
+		\node[draw,circle,minimum size=5mm, label = right:{$B,D,C,A$}] (X) at (2,-2) {$X$};
+		\node[draw,circle,minimum size=5mm, label = right:{$C,A,D,B$}] (Y) at (2,-4) {$Y$};
+		\node[draw,circle,minimum size=5mm, label = right:{$D,B,A,C$}] (Z) at (2,-6) {$Z$};
+		
+		\node[red] (m) at (0,0.55) {m};
+		\node[red] (w) at (2.1,-5.45) {w};
+		\node[red] (m2) at (0,-3.45) {m'};
+		\node[red] (w2) at (2,0.55) {w'};
+		
+		%\foreach \X [count=\Y from 2] in {1, ..., 3}{
+		%	\draw[-] (\X) -- (\Y);
+		%}
+		\draw[thick, lightgray] (A) -- (W);
+		\draw[thick] (B) -- (X);
+		\draw[thick,lightgray] (C) -- (Z);
+		\draw[thick] (D) -- (Y);
+		\draw[thick] (A) -- (Z);
+		\draw[thick] (C) -- (W);
+		\end{tikzpicture}
+	\end{center}
+	verbinde $\{A,Z\}$ und $\{C,W\}$. Die aufgelösten Kanten sind hier grau gefärbt.
+\end{halfboxr}
+
+\begin{theo}{Korrektheit der Seitensprung-Dynamik}
+	Die Seitensprung-Dynamik terminiert nicht für jede Eingabe. Das heißt es wird nicht für alle Eingaben ein stabiles Matching gefunden. (Wenn man das Beispiel oben weiterführt, landet man irgendwann wieder an der Ausgangsposition).
+\end{theo}
+
+\subsubsection{Gale-Shapley Algorithmus}
+
+Es gibt jedoch einen Algorithmus, der stets ein stabiles Matching findet:
+
+\begin{algo}{Gale-Shapley}
+	\textbf{Eingabe:} Ein bipartiter Graph $G$ mit einer Präferenzliste an jedem Knoten
+	
+	\textbf{Ausgabe:} Stabiles, perfektes Matching $M^*$.
+	\tcblower
+	
+	Zu Beginn sind alle Männer und Frauen ungematched
+	
+	\textbf{WHILE} (es noch einen freien Mann gibt, der noch nicht allen Frauen einen Antrag gemacht hat)
+	
+	\tab Wähle einen solchen freien Mann $M$
+	
+	\tab Lasse diesen der besten Frau $w$ auf seiner Liste einen Antrag machen
+	
+	\tab \textbf{IF} (Frau $w$ ist noch frei)
+	
+	\tab\tab Verlobe $m$ und $w$
+	
+	\tab \textbf{ELSE} 
+	
+	\tab\tab  \textbf{IF} ($w$ findet $m$ besser als ihren aktuellen Verlobten $m'$)
+	
+	\tab\tab\tab Hebe die Verlobung von $w'$ und $m'$ auf
+	
+	\tab\tab\tab Verlobe $m$ und $w$
+	
+	\tab\tab\tab Streiche $w'$ von der Liste von $m'$
+	
+	\tab\tab \textbf{ELSE}
+	
+	\tab\tab\tab Streiche $w$ von der Liste von $m$
+	
+	Verheirate alle verlobten Paare
+	
+	\textbf{RETURN} das resultierende Matching $M^*$ von verheirateten Paaren
+\end{algo}
+
+Man beachte, dass ein Mann $m$ nur dann mit einer Frau $w$ verlobt wird, wenn entweder $w$ noch keinen Partner hat, oder wenn $w$ denn Mann $m$ besser als ihren bisherigen Verlobten $m'$ findet. Im Umkehrschluss bedeutet dies, das ein bereits verlobter Mann $m'$ seine Verlobte dadurch verlieren kann und wieder in die Liste der Männer hinzugefügt wird, die noch nicht allen Frauen einen Antrag gemacht hat. 
+
+Ein perfektes Matching ist stabil, wenn entweder 
+\begin{itemize}
+	\item jeder Mann seine erste Wahl zur Partnerin hat, oder
+	\item jede Frau ihre erste Wahl als Partner hat,
+\end{itemize}
+da so niemand den Anreiz zu einem Seitensprung hätte (dieser Fall tritt jedoch selten ein). Für Gale-Shapley gilt unabhängig davon:
+
+\begin{theo}{Korrektheit von Gale-Shapley}
+	Gale-Shapley berechnet stets ein stabiles perfektes Matching. 
+	
+	Der Algorithmus hat eine Laufzeit von $\mathcal{O}(n^2)$, wobei $n$ der Anzahl der Männer bzw. der Frauen entspricht.
+\end{theo}
+
+Unter Umständen kann es mehrere stabile Matchings in einem Graphen geben, daher stellt sich die Frage, welches Gale-Shapley findet. Man stellt zunächst fest, dass Gale-Shapley die Männer bevorzugt, da diese aktiv auswählen und die Frauen nur passiv abwarten. 
+
+\begin{thirdboxl}
+	\vspace{-\baselineskip}	
+	\begin{defi}{Zulässige Partnerin}
+		Eine Frau $w$ ist eine \emph{zulässige Partnerin} von Mann $m$, wenn es ein stabiles perfektes Matching gibt, bei dem $m$ und $w$ ein Paar bilden.
+	\end{defi}
+
+	\begin{defi}{Mann-optimal}
+		Ein Matching wird \emph{Mann-optimal} genannt, wenn jeder Mann mit seiner bevorzugten zulässigen Partnerin zusammen ist
+	\end{defi}
+\end{thirdboxl}%
+\begin{thirdboxm}
+	\vspace{-\baselineskip}	
+	\begin{center}
+		\begin{tikzpicture}
+		\node[draw,circle,minimum size=5mm, label = left:{$X,Y,Z$}] (A) at (0,0) {$A$};
+		\node[draw,circle,minimum size=5mm, label = left:{$Y,X,Z$}] (B) at (0,-2) {$B$};
+		\node[draw,circle,minimum size=5mm, label = left:{$X,Y,Z$}] (C) at (0,-4) {$C$};
+	
+		\node[draw,circle,minimum size=5mm, label = right:{$B,A,C$}] (X) at (2,0) {$X$};
+		\node[draw,circle,minimum size=5mm, label = right:{$A,B,C$}] (Y) at (2,-2) {$Y$};
+		\node[draw,circle,minimum size=5mm, label = right:{$A,B,C$}] (Z) at (2,-4) {$Z$};
+		
+		\draw[thick,red] (A) -- (X);
+		\draw[thick,red] (B) -- (Y);
+		\draw[thick,red] (C.315) -- (Z.225);
+		\draw[thick,blue] (A) -- (Y);
+		\draw[thick,blue] (B) -- (X);
+		\draw[thick,blue] (C.45) -- (Z.135);
+		\end{tikzpicture}
+	\end{center}
+\end{thirdboxm}%
+\begin{thirdboxr}
+	\vspace{-\baselineskip}	
+	\begin{itemize}
+		\item $X$ und $Y$ sind zulässige Partnerinnen von $A$
+		\item $X$ und $Y$ sind zulässige Partnerinnen von $B$
+		\item nur $Z$ ist zulässige Partnerin von $C$. Jedes perfekte stabile Matching muss deshalb die Kante $\{C,Z\}$ enthalten
+	\end{itemize}
+\end{thirdboxr}
+
+
+
 
 \section{Sortieren}
 
