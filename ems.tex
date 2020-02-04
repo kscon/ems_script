@@ -164,9 +164,9 @@ Es gibt zwei Algorithmen, die hier betrachtet werden: Die Seitensprung-Dynamik u
 	\tcblower
 	
 	\textbf{WHILE} (unzufriedenes Paar $\{m,w\}$ existiert)
-	\begin{itemize}
-		\item Ersetze die Matchingkanten $\{m,w'\}$ und $\{m',w\}$ durch $\{m,w\}$ und $\{m',w'\}$
-	\end{itemize}
+
+	\tab Ersetze die Matchingkanten $\{m,w'\}$ und $\{m',w\}$ durch $\{m,w\}$ und $\{m',w'\}$
+   
 	\textbf{RETURN} $M^*$
 	
 \end{algo}
@@ -310,7 +310,7 @@ Unter Umständen kann es mehrere stabile Matchings in einem Graphen geben, daher
 	\end{defi}
 \end{thirdboxl}%
 \begin{thirdboxm}
-	\vspace{-\baselineskip}	
+	\vspace{0.7cm}	
 	\begin{center}
 		\begin{tikzpicture}
 		\node[draw,circle,minimum size=5mm, label = left:{$X,Y,Z$}] (A) at (0,0) {$A$};
@@ -331,7 +331,7 @@ Unter Umständen kann es mehrere stabile Matchings in einem Graphen geben, daher
 	\end{center}
 \end{thirdboxm}%
 \begin{thirdboxr}
-	\vspace{-\baselineskip}	
+	\vspace{1.5cm}	
 	\begin{itemize}
 		\item $X$ und $Y$ sind zulässige Partnerinnen von $A$
 		\item $X$ und $Y$ sind zulässige Partnerinnen von $B$
@@ -339,10 +339,123 @@ Unter Umständen kann es mehrere stabile Matchings in einem Graphen geben, daher
 	\end{itemize}
 \end{thirdboxr}
 
+\begin{theo}{Gale-Shapley und Matchings}
+	\begin{itemize}
+		\item Mann-optimale Matchings sind perfekt und stabil.
+		\item Gale-Shapley liefert stets ein Mann-optimales Matching.
+		\item Gale-Shapley weist jeder Frau den für sie schlechtesten zulässigen Partner zu
+	\end{itemize}
 
+\end{theo}
 
+\subsection{Kontext des Stable Marriage Problems: College Admission}
+
+\begin{halfboxl}
+	\vspace{-\baselineskip}
+	\begin{defi}{College Admission Problem}
+		Es gibt Studierende und Universitäten mit jeweiligen Präferenzen, die einander zugeteilt werden sollen.\\
+		
+		\begin{itemize}
+			\item Studierende bzw. Universitäten können als inakzeptabel deklariert werden
+			\item Es gibt nicht unbedingt gleich viele Studierende wie Unis
+			\item Jede Uni hat eine Quote, die die maximale Anzahl zugewiesener Studis festlegt
+		\end{itemize}
+	
+	Eine Zuweisung (hier spricht man nicht mehr von Matching, wie es oben definert wurde) ist zulässig, wenn jeder Studi einer akzeptable Uni zugewiesen wurde und jeder Uni nur akzeptable Studis zugewiesen wurde. Auch hier kann es analog "blockierende" Kanten geben.
+	\end{defi}
+\end{halfboxl}%
+\begin{halfboxr}
+	\vspace{-\baselineskip}
+	Graph-Beispiel für das Stable Marriage Problem:\\
+	
+	\begin{center}
+		\begin{tikzpicture}
+		\node[draw,circle,minimum size=5mm, label = left:{$X,Z,W,Y$}] (A) at (0,0) {$A$};
+		\node[draw,circle,minimum size=5mm, label = left:{$Y,W,X,Z$}] (B) at (0,-2) {$B$};
+		\node[draw,circle,minimum size=5mm, label = left:{$Z,X,Y,W$}] (C) at (0,-4) {$C$};
+		\node[draw,circle,minimum size=5mm, label = left:{$W,Y,Z,X$}] (D) at (0,-6) {$D$};
+		
+		\node[draw,circle,minimum size=5mm, label = right:{$A,B,C,D$}] (B) at (2,0) {Berlin};
+		\node[draw,circle,minimum size=5mm, label = right:{$B,D,C,A$}] (X) at (2,-2) {Aachen};
+	
+		\draw[thick] (A) -- (W);
+		\draw[thick] (B) -- (X);
+		\draw[thick] (C) -- (Z);
+		\draw[thick] (D) -- (Y);
+		\draw[thick,red] (A) -- (Z);
+		\end{tikzpicture}
+		
+		Hier liegt ein instabiles Matching vor: $\{A,Z\}$ sind unzufrieden mit der Partnerwahl; sie finden sich gegenseitig besser als ihre jetzigen Partner und hätten damit Anlass für einen Seitensprung.
+	\end{center}
+\end{halfboxr}
 
 \section{Sortieren}
+
+Grundsätzlich in diesem Kapitel, sowie in allen folgenden, beginnen Arrays bzw. Listen immer mit dem Index 0. Das heißt, in einem Array $A$ mit z.B. 3 Elementen, gibt es die Position $A[0]$, $A[1]$ und $A[2]$. Das erste Element eines $n$-elementigen Arrays $A$ ist also $A[0]$ und das letzte $A[n-1]$.
+
+\subsection{Insertion Sort und Merge Sort}
+
+Insertion Sort ist ein Sortierverfahren, dass jedes Element eines Arrays an die richtige Stelle im bereits sortierten Teilarray einfügt (``insertion''). Merge Sort hingegen teilt das Array rekursiv in zwei Teillisten und ``mergt'' diese dann zu sortierten Teillisten zusammen.
+
+\begin{halfboxl}
+	\vspace{-\baselineskip}
+	\begin{algo}{Insertion Sort}
+		\textbf{Eingabe:} Array der Länge $n$
+		
+		\textbf{Ausgabe:} Aufsteigend sortiertes Array $A$
+		\tcblower
+		
+		\textbf{FOR} $j=1$ \textbf{TO} $n-1$
+		
+		\tab $key$ = $A[j]$
+		
+		\tab $i = j-1$
+		
+		\tab \textbf{WHILE} ($i>0$ \textbf{AND} $A[i]>key$)
+		
+		\tab\tab $A[i+1] = A[i]$
+		
+		\tab\tab $i =i-1$
+		
+		\tab $A[i+1] = key$
+		
+		\textbf{RETURN} $A$
+	\end{algo}
+\end{halfboxl}%
+\begin{halfboxr}
+	\vspace{-\baselineskip}
+	\begin{algo}{Merge Sort}
+		\textbf{Eingabe:} Array der Länge $n$
+		
+		\textbf{Ausgabe:} Aufsteigend sortiertes Array $A$
+		\tcblower
+		
+		\textbf{FOR} $j=1$ \textbf{TO} $n-1$
+		
+		\tab $key$ = $A[j]$
+		
+		\tab $i = j-1$
+		
+		\tab \textbf{WHILE} ($i>0$ \textbf{AND} $A[i]>key$)
+		
+		\tab\tab $A[i+1] = A[i]$
+		
+		\tab\tab $i =i-1$
+		
+		\tab $A[i+1] = key$
+		
+		\textbf{RETURN} $A$
+\end{halfboxr}
+
+TODO: Merge-Sort code einfügen
+
+
+Merge Sort
+
+Selection Sort
+
+Bubble Sort
+
 
 \section{Laufzeit}
 
