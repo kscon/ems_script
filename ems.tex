@@ -430,27 +430,64 @@ Insertion Sort ist ein Sortierverfahren, dass jedes Element eines Arrays an die 
 		\textbf{Ausgabe:} Aufsteigend sortiertes Array $A$
 		\tcblower
 		
-		\textbf{FOR} $j=1$ \textbf{TO} $n-1$
+		\textbf{IF} ($n=1$)
 		
-		\tab $key$ = $A[j]$
+		\tab \textbf{RETURN} $A$
 		
-		\tab $i = j-1$
+		Sortiere $A[1 \dots \frac{n}{2}]$ und $A[\frac{n}{2} +1 \dots n]$ rekursiv
 		
-		\tab \textbf{WHILE} ($i>0$ \textbf{AND} $A[i]>key$)
-		
-		\tab\tab $A[i+1] = A[i]$
-		
-		\tab\tab $i =i-1$
-		
-		\tab $A[i+1] = key$
+		Merge die beiden sortierten Teilarrays
 		
 		\textbf{RETURN} $A$
+	\end{algo}
 \end{halfboxr}
 
-TODO: Merge-Sort code einfügen
+\subsection{Selection Sort und Bubble Sort}
 
-
-Merge Sort
+\begin{halfboxl}
+	\vspace{-\baselineskip}
+	\begin{algo}{Selection Sort}
+		\textbf{Eingabe:} Array der Länge $n$
+		
+		\textbf{Ausgabe:} Aufsteigend sortiertes Array $A$
+		\tcblower
+		
+		\textbf{FOR} $j=0$ \textbf{TO} $n-1$
+		
+		\tab $i_{\min}$ = $j$
+		
+		\tab \textbf{FOR} $i = j + 1 $ \textbf{TO} $n-1$
+		
+		\tab\tab \textbf{IF} ($A[i] < A[i_{\min}]$)
+		
+		\tab\tab\tab $i_{\min} = i$
+		
+		\tab \textbf{IF} ($i_{\min} \neq j$)
+		
+		\tab\tab Tausche $A[j]$ und $A[i_{\min}]$
+		
+		\textbf{RETURN} $A$
+	\end{algo}
+\end{halfboxl}%
+\begin{halfboxr}
+	\vspace{-\baselineskip}
+	\begin{algo}{Bubble Sort}
+		\textbf{Eingabe:} Array der Länge $n$
+		
+		\textbf{Ausgabe:} Aufsteigend sortiertes Array $A$
+		\tcblower
+		
+		\textbf{IF} ($n=1$)
+		
+		\tab \textbf{RETURN} $A$
+		
+		Sortiere $A[1 \dots \frac{n}{2}]$ und $A[\frac{n}{2} +1 \dots n]$ rekursiv
+		
+		Merge die beiden sortierten Teilarrays
+		
+		\textbf{RETURN} $A$
+	\end{algo}
+\end{halfboxr}
 
 Selection Sort
 
