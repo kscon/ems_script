@@ -477,24 +477,84 @@ Insertion Sort ist ein Sortierverfahren, dass jedes Element eines Arrays an die 
 		\textbf{Ausgabe:} Aufsteigend sortiertes Array $A$
 		\tcblower
 		
-		\textbf{IF} ($n=1$)
+		\textbf{FOR} i = n \textbf{DOWN}\footnotemark \textbf{ TO} 2
 		
-		\tab \textbf{RETURN} $A$
+		\tab \textbf{FOR} j = 0 \textbf{TO} i-1
 		
-		Sortiere $A[1 \dots \frac{n}{2}]$ und $A[\frac{n}{2} +1 \dots n]$ rekursiv
+		\tab\tab \textbf{IF} (A[j] $>$ A[j+1])
 		
-		Merge die beiden sortierten Teilarrays
+		\tab\tab\tab Tausche A[j] und A[j+1]
 		
-		\textbf{RETURN} $A$
+		\textbf{RETURN} A
 	\end{algo}
 \end{halfboxr}
 
-Selection Sort
+\todo{ Algorithmenboxen schöner machen }
 
-Bubble Sort
+\footnotetext{Das \textbf{DOWN TO} entscheidet sich von den bisherigen \textbf{FOR \dots TO} nur dadurch, dass wir die Variable anstatt hochzuzählen, bei einem \textbf{DOWN TO} nach jeder Iteration der Schleife um eins runterzählen.} 
+
 
 
 \section{Laufzeit}
+
+Die Laufzeitanalyse untersucht die Dauer, die ein Algorithmus oder Programm zum Lösen eines Problems bzw. einer Eingabe braucht. Da es verschieden schnelle Rechner in verschiedenen Anwendungsgebieten gibt, (z.B. Microcontroller vs Rechencluster), hat man sich darauf geeinigt, die Dauer eines Algorithmus nicht in Sekunden oder Minuten anzugeben, sondern in Abhängigkeit von der Länge der Eingabe. Dabei kommt es auch darauf an, wie ``gut'' die Eingabe codiert ist, aber das würde an dieser Stelle über das Thema hinaus gehen. 
+
+Im folgenden wird meist von der Größe oder Länge der Eingabe als $n$ gesprochen. Die Laufzeitanalyse untersucht dann, in welcher Größenordnung sich die Laufzeitfunktion $T(n)$ bei wachsender Eingabegröße $n$ bewegt. Um dies geeignet (aber zugegeben nicht sofort verständlich) darzustellen, wird im Allgemeinen die ``Big-O''-Notation verwendet.
+
+\subsection{O-Notation}
+
+\begin{thirdboxl}
+	\vspace{-\baselineskip}	
+	\begin{defi}{$\mathcal{O}(f)$}
+		$\mathcal{O}(f)$ ist die Menge der Funktionen $g$, die nicht schneller wachsen als $f$. $g\in \mathcal{O}(f)$ heißt, das $c \cdot f(n)$ eine obere Schranke für $g(n)$ ist. 
+		
+		$\mathcal{O}(f):=\{g \in \mathcal{R}^{\mathcal{N}}_+ | xy \}$
+	\end{defi}
+
+	\begin{tikzpicture}[domain=0:4.3] 
+	%\draw[thin,color=gray] (-0.1,-1.1) -- (3.9,3.9);
+	\draw[->] (-0.2,0) -- (4.3,0) node[below left] {Eingabelänge}; 
+	\draw[->] (0,-0.2) -- (0,3.5) node[above] {Laufzeit};
+	\draw[color=red]    plot (\x, {0.1*(\x)^2 + 0.5})             node[above left] {$c \cdot f(n)$}; 
+	\draw[color=blue]   plot (\x,{sin(\x r)+ 0.12*\x^2 - 0.2})    node[above left] {$g(n)$}; 
+	%\draw[color=orange] plot (\x,{0.05*exp(\x)}) node[right] {$f(x) = \frac{1}{20} \mathrm e^x$};
+	\end{tikzpicture}
+	
+	
+\end{thirdboxl}%
+\begin{thirdboxm}
+	\vspace{-\baselineskip}	
+	\begin{defi}{Big O}
+		bla
+	\end{defi}
+	
+	\begin{tikzpicture}[domain=0:4.3] 
+	%\draw[thin,color=gray] (-0.1,-1.1) -- (3.9,3.9);
+	\draw[->] (-0.2,0) -- (4.3,0) node[below left] {Eingabelänge}; 
+	\draw[->] (0,-0.2) -- (0,3.5) node[above] {Laufzeit};
+	\draw[color=red]    plot (\x, {0.1*(\x)^2 + 0.5})             node[above left] {$c \cdot f(n)$}; 
+	\draw[color=blue]   plot (\x,{sin(\x r)+ 0.12*\x^2 - 0.2})    node[above left] {$g(n)$}; 
+	%\draw[color=orange] plot (\x,{0.05*exp(\x)}) node[right] {$f(x) = \frac{1}{20} \mathrm e^x$};
+	\end{tikzpicture}
+\end{thirdboxm}%
+\begin{thirdboxr}
+	\vspace{-\baselineskip}	
+	\begin{defi}{$\mathcal{O}(f)$}
+		bla
+	\end{defi}
+	
+	\begin{tikzpicture}[domain=0:4.3] 
+	%\draw[thin,color=gray] (-0.1,-1.1) -- (3.9,3.9);
+	\draw[->] (-0.2,0) -- (4.3,0) node[below left] {Eingabelänge}; 
+	\draw[->] (0,-0.2) -- (0,3.5) node[above] {Laufzeit};
+	\draw[color=red]    plot (\x, {0.1*(\x)^2 + 0.5})             node[above left] {$c \cdot f(n)$}; 
+	\draw[color=blue]   plot (\x,{sin(\x r)+ 0.12*\x^2 - 0.2})    node[above left] {$g(n)$}; 
+	%\draw[color=orange] plot (\x,{0.05*exp(\x)}) node[right] {$f(x) = \frac{1}{20} \mathrm e^x$};
+	\end{tikzpicture}
+\end{thirdboxr}
+
+
+
 
 \section{Interval-Scheduling und Partitioning}
 
