@@ -366,26 +366,24 @@ Unter Umständen kann es mehrere stabile Matchings in einem Graphen geben, daher
 \end{halfboxl}%
 \begin{halfboxr}
 	\vspace{-\baselineskip}
-	Graph-Beispiel für das Stable Marriage Problem:\\
+	Graph-Beispiel für das College Admission Problem:\\
 	
 	\begin{center}
 		\begin{tikzpicture}
-		\node[draw,circle,minimum size=5mm, label = left:{$X,Z,W,Y$}] (A) at (0,0) {$A$};
-		\node[draw,circle,minimum size=5mm, label = left:{$Y,W,X,Z$}] (B) at (0,-2) {$B$};
-		\node[draw,circle,minimum size=5mm, label = left:{$Z,X,Y,W$}] (C) at (0,-4) {$C$};
-		\node[draw,circle,minimum size=5mm, label = left:{$W,Y,Z,X$}] (D) at (0,-6) {$D$};
+		\node[draw,circle,minimum size=5mm, label = left:{Ber, Ac}] (A) at (0,0) {$A$};
+		\node[draw,circle,minimum size=5mm, label = left:{Ac, Ber}] (B) at (0,-2) {$B$};
+		\node[draw,circle,minimum size=5mm, label = left:{Ber, Ac}] (C) at (0,-4) {$C$};
+		\node[draw,circle,minimum size=5mm, label = left:{Ber}] (D) at (0,-6) {$D$};
 		
-		\node[draw,circle,minimum size=5mm, label = right:{$A,B,C,D$}] (B) at (2,0) {Berlin};
-		\node[draw,circle,minimum size=5mm, label = right:{$B,D,C,A$}] (X) at (2,-2) {Aachen};
+		\node[draw,circle,minimum size=8mm, label = right:{A,B,C,D, Quote=2}] (Berlin) at (3,-1) {Berlin};
+		\node[draw,circle,minimum size=8mm, label = right:{B,D,C,A, Quote=2}] (Aachen) at (3,-4) {Aachen};
 	
-		\draw[thick] (A) -- (W);
-		\draw[thick] (B) -- (X);
-		\draw[thick] (C) -- (Z);
-		\draw[thick] (D) -- (Y);
-		\draw[thick,red] (A) -- (Z);
+		\draw[thick] (A) -- (Berlin);
+		\draw[thick] (B) -- (Aachen);
+		\draw[thick] (C) -- (Aachen);
+		\draw[thick] (D) -- (Berlin);
+		%\draw[thick,red] (A) -- (Z);
 		\end{tikzpicture}
-		
-		Hier liegt ein instabiles Matching vor: $\{A,Z\}$ sind unzufrieden mit der Partnerwahl; sie finden sich gegenseitig besser als ihre jetzigen Partner und hätten damit Anlass für einen Seitensprung.
 	\end{center}
 \end{halfboxr}
 
@@ -497,66 +495,201 @@ Insertion Sort ist ein Sortierverfahren, dass jedes Element eines Arrays an die 
 
 \section{Laufzeit}
 
+\subsection{Laufzeitanalyse}
+
+
 Die Laufzeitanalyse untersucht die Dauer, die ein Algorithmus oder Programm zum Lösen eines Problems bzw. einer Eingabe braucht. Da es verschieden schnelle Rechner in verschiedenen Anwendungsgebieten gibt, (z.B. Microcontroller vs Rechencluster), hat man sich darauf geeinigt, die Dauer eines Algorithmus nicht in Sekunden oder Minuten anzugeben, sondern in Abhängigkeit von der Länge der Eingabe. Dabei kommt es auch darauf an, wie ``gut'' die Eingabe codiert ist, aber das würde an dieser Stelle über das Thema hinaus gehen. 
 
-Im folgenden wird meist von der Größe oder Länge der Eingabe als $n$ gesprochen. Die Laufzeitanalyse untersucht dann, in welcher Größenordnung sich die Laufzeitfunktion $T(n)$ bei wachsender Eingabegröße $n$ bewegt. Um dies geeignet (aber zugegeben nicht sofort verständlich) darzustellen, wird im Allgemeinen die ``Big-O''-Notation verwendet.
+Es gibt drei häufig angewandte Analyse Methoden für Algorithmen:
+
+\begin{itemize}
+	\item Worst-Case Analyse: Wie viele Rechenschritte bzw. wie viel Rechendauer benötigt der Algorithmus für die schlimmst-möglichsten Eingabe? Diese Analyseart ist die gängigste und oft auch die aussagekräftigste.
+	\item Average-Case Analyse: Wie viele Rechenschritte benötigt der Algorithmus im Durchschnitt für jede Eingabe? 
+	\item Best-Case Analyse: Wie viele Rechenschritte benötigt der Algorithmus für die best-mögliche Eingabe? Hier sollte man aufpassen, denn ein "guter" Algorithmus ist nicht nur auf ein paar wenigen Instanzen schnell bzw. effizient.
+\end{itemize}
+
+Diese Analysearten sind analog zu den nun folgenden mathematischen Beschreibungen in Form von unteren bzw. oberen Schranken.
 
 \subsection{O-Notation}
 
-\begin{thirdboxl}
-	\vspace{-\baselineskip}	
+Im folgenden wird meist von der Größe oder Länge der Eingabe als $n$ gesprochen. Die Laufzeitanalyse untersucht dann, in welcher Größenordnung sich die Laufzeitfunktion $T(n)$ bei wachsender Eingabegröße $n$ bewegt. Um dies geeignet (aber zugegeben nicht sofort verständlich) darzustellen, wird im Allgemeinen die ``Big-O''-Notation verwendet.
+
+
+
 	\begin{defi}{$\mathcal{O}(f)$}
-		$\mathcal{O}(f)$ ist die Menge der Funktionen $g$, die nicht schneller wachsen als $f$. $g\in \mathcal{O}(f)$ heißt, das $c \cdot f(n)$ eine obere Schranke für $g(n)$ ist. 
+		$\mathcal{O}(f)$ ist die Menge der Funktionen $g$, die nicht schneller wachsen als $f$. Wenn $g\in \mathcal{O}(f)$, ist $c \cdot f(n)$ eine obere Schranke für $g(n)$. Formal aufgeschrieben:
 		
-		$\mathcal{O}(f):=\{g \in \mathcal{R}^{\mathcal{N}}_+ | xy \}$
+		$\mathcal{O}(f):=\{g \in \mathbb{{R}^{\mathbb{N}}_+} | \exists c>0. \exists n_0 \in \mathbb{N}. \forall n \geq n_0 . g(n) \leq c \cdot f(n) \}$
+		
+		Dabei ist $c$ ein beliebiger Faktor, und $n_0$ ein Wert, ab dem für irgendein $n \geq n_0$ $c \cdot f(n)$ immer größer-gleich $g(n)$ ist. $\mathbb{{R}^{\mathbb{N}}_+}$ liest man als die Menge von Funktionen, die von $\mathbb{N}$ (der Eingabelänge) nach den nicht-negativen reellen Zahlen $\mathbb{R}_+$ (die Laufzeit) auswerten. 
 	\end{defi}
 
 	\begin{tikzpicture}[domain=0:4.3] 
 	%\draw[thin,color=gray] (-0.1,-1.1) -- (3.9,3.9);
-	\draw[->] (-0.2,0) -- (4.3,0) node[below left] {Eingabelänge}; 
+	\draw[->] (-0.2,0) -- (4.3,0) node[below right] {Eingabelänge}; 
 	\draw[->] (0,-0.2) -- (0,3.5) node[above] {Laufzeit};
 	\draw[color=red]    plot (\x, {0.1*(\x)^2 + 0.5})             node[above left] {$c \cdot f(n)$}; 
-	\draw[color=blue]   plot (\x,{sin(\x r)+ 0.12*\x^2 - 0.2})    node[above left] {$g(n)$}; 
+	\draw[color=blue]   plot (\x,{sin(\x r)+ 0.12*\x^2 - 0.2})    node[right]{$g(n)$}; 
+	
+	\draw[dashed] (2.53305, 1.14163) -- (2.53305,0)  node[below] {$n_0$};
 	%\draw[color=orange] plot (\x,{0.05*exp(\x)}) node[right] {$f(x) = \frac{1}{20} \mathrm e^x$};
 	\end{tikzpicture}
 	
 	
-\end{thirdboxl}%
-\begin{thirdboxm}
-	\vspace{-\baselineskip}	
-	\begin{defi}{Big O}
-		bla
-	\end{defi}
-	
-	\begin{tikzpicture}[domain=0:4.3] 
-	%\draw[thin,color=gray] (-0.1,-1.1) -- (3.9,3.9);
-	\draw[->] (-0.2,0) -- (4.3,0) node[below left] {Eingabelänge}; 
-	\draw[->] (0,-0.2) -- (0,3.5) node[above] {Laufzeit};
-	\draw[color=red]    plot (\x, {0.1*(\x)^2 + 0.5})             node[above left] {$c \cdot f(n)$}; 
-	\draw[color=blue]   plot (\x,{sin(\x r)+ 0.12*\x^2 - 0.2})    node[above left] {$g(n)$}; 
-	%\draw[color=orange] plot (\x,{0.05*exp(\x)}) node[right] {$f(x) = \frac{1}{20} \mathrm e^x$};
-	\end{tikzpicture}
-\end{thirdboxm}%
-\begin{thirdboxr}
-	\vspace{-\baselineskip}	
-	\begin{defi}{$\mathcal{O}(f)$}
-		bla
-	\end{defi}
-	
-	\begin{tikzpicture}[domain=0:4.3] 
-	%\draw[thin,color=gray] (-0.1,-1.1) -- (3.9,3.9);
-	\draw[->] (-0.2,0) -- (4.3,0) node[below left] {Eingabelänge}; 
-	\draw[->] (0,-0.2) -- (0,3.5) node[above] {Laufzeit};
-	\draw[color=red]    plot (\x, {0.1*(\x)^2 + 0.5})             node[above left] {$c \cdot f(n)$}; 
-	\draw[color=blue]   plot (\x,{sin(\x r)+ 0.12*\x^2 - 0.2})    node[above left] {$g(n)$}; 
-	%\draw[color=orange] plot (\x,{0.05*exp(\x)}) node[right] {$f(x) = \frac{1}{20} \mathrm e^x$};
-	\end{tikzpicture}
-\end{thirdboxr}
 
+	\begin{defi}{$\Omega(f)$}
+		$\Omega(f)$ ist die Menge der Funktionen $g$, die nicht langsamer wachsen als $f$. Wenn $g\in \Omega(f)$, ist $c \cdot f(n)$ eine untere Schranke für $g(n)$. Formal aufgeschrieben:
+		
+		$\Omega(f):=\{g \in \mathbb{{R}^{\mathbb{N}}_+} | \exists c>0. \exists n_0 \in \mathbb{N}. \forall n \geq n_0 . g(n) \geq c \cdot f(n) \}$
+		
+	\end{defi}
+	
+	\begin{tikzpicture}[domain=0:4.3] 
+	%\draw[thin,color=gray] (-0.1,-1.1) -- (3.9,3.9);
+	\draw[->] (-0.2,0) -- (4.3,0) node[below right] {Eingabelänge}; 
+	\draw[->] (0,-0.2) -- (0,3.5) node[above] {Laufzeit};
+	\draw[color=red]    plot (\x, {0.02*(\x)^2 + 0.55})             node[below right] {$c \cdot f(n)$}; 
+	\draw[color=blue]   plot (\x,{sin(\x r)+ 0.12*\x^2 + 0.1})    node[above right] {$g(n)$}; 
+	
+	\draw[dashed] (0.444737, 0.553955) -- (0.444737,0)  node[below] {$n_0$};
+	%\draw[color=orange] plot (\x,{0.05*exp(\x)}) node[right] {$f(x) = \frac{1}{20} \mathrm e^x$};
+	\end{tikzpicture}
+
+
+\begin{defi}{$\Theta(f)$}
+		$\Theta(f)$ ist die Menge der Funktionen $g$, die nicht langsamer wachsen als $f$. Wenn $g\in \Theta(f)$, ist $c \cdot f(n)$ eine untere Schranke für $g(n)$. Formal aufgeschrieben:
+		
+		$\Theta(f):=\{g \in \mathbb{{R}^{\mathbb{N}}_+} | \exists c_1,c_2 >0. \exists n_0 \in \mathbb{N}. \forall n \geq n_0 . c_1 \cdot f(n) \leq g(n) \leq c_2 \cdot f(n) \}$
+		
+		Alternativ gilt: $g \in \Theta(f) \Leftrightarrow g \in \mathcal{O}(f) \land g \in \Omega (f)$
+\end{defi}
+	
+\begin{tikzpicture}[domain=0:4.3] 
+	%\draw[thin,color=gray] (-0.1,-1.1) -- (3.9,3.9);
+	\draw[->] (-0.2,0) -- (4.3,0) node[below right] {Eingabelänge}; 
+	\draw[->] (0,-0.2) -- (0,3.5) node[above] {Laufzeit};
+	\draw[color=red]    plot (\x, {0.1*(\x)^2 + 0.5})             node[above] {$c_2 \cdot f(n)$}; 
+	\draw[color=blue]   plot (\x,{sin(\x r)+ 0.12*\x^2 - 0.2})    node[above] {$g(n)$}; 
+	
+	\draw[color=olive]    plot (\x, {0.02*(\x)^2 + 0.50})             node[below right] {$c_1 \cdot f(n)$}; 
+	
+	\draw[dashed] (2.53305, 1.14163) -- (2.53305,0)  node[below] {$n_0$};
+	%\draw[color=orange] plot (\x,{0.05*exp(\x)}) node[right] {$f(x) = \frac{1}{20} \mathrm e^x$};
+\end{tikzpicture}
+
+\todo{Venn-Diagramm mit Beziehungen der einzelnen Mengen}
+
+Laufzeit einiger Algorithmen:
+
+\begin{itemize}
+	\item Merge Sort: $\mathcal{O}(n \log (n))$, $\Theta (n \log (n))$
+	\item Insertion Sort, Selection Sort: $\mathcal{O}(n^2)$, $\Omega (n)$
+\end{itemize}
 
 
 
 \section{Interval-Scheduling und Partitioning}
+
+\subsection{Greedy Algorithmen}
+
+Greedy (zu deutsch ``gierig'') Algorithmen ist die Bezeichnung für solche Algorithmen, die versuchen, in jedem Schritt möglichst nah an die optimale Lösung heranzukommen und dabei Stück für Stück eine bessere Lösung generieren. Diese Art der Lösungsfindung funktioniert für einige Probleme gut (z.B. Scheduling, Partitioning), für andere jedoch nicht immer gut (z.B. Cashier's Algorithmus).
+
+\subsection{Cashier's Algorithmus}
+
+Der Cashier's Algorithmus gibt für einen Geldbetrag, das mit Münzen verschiedener Münzwerte ausgezahlt werden soll, eine Menge von Münzen aus, die in Summe gleich dem Geldbetrag sind. 
+
+\begin{algo}{Cashier's Algorithmus}
+	\textbf{Eingabe:} Betrag $x$, Münzwerte $c_1, \dots , c_n$
+	
+	\textbf{Ausgabe:} Menge $S$ an Münzen mit Gesamtwert $x$
+	\tcblower
+	
+	Sortiere die $n$ Münzwerte aufsteigend, sodass $c_1 \leq \dots \leq c_n$
+	
+	$S = \{ \}$
+	
+	\textbf{WHILE} ($x>0$)
+	
+	\tab Sei $k$ der größte Index mit $c_k \leq x$
+	
+	\tab \textbf{IF} (kein solches $k$ existiert)
+	
+	\tab\tab \textbf{RETURN} ``keine Lösung''
+	
+	\tab \textbf{ELSE} 
+	
+	\tab\tab $x = x - c_k$
+		
+	\tab\tab Füge eine Münze von Wert $c_k$ zu $S$ hinzu
+	
+	\tab \textbf{RETURN} $S$
+\end{algo}
+
+\paragraph{Bemerkung zur Optimalität:} Der Cashier's Algorithmus liefert nicht immer die optimale Lösung, z.B. würde der Algorithmus mit Münzen von Wert 3 und 5 bei einem Betrag von $x=9$ ``keine Lösung'' ausgeben, obwohl drei 3-Münzen möglich sind. 
+
+\subsection{Interval Scheduling}
+Beim Interval Scheduling geht es darum, Anfragen oder Jobs für eine Ressource so auszuwählen, dass sich die Jobs überlappungsfrei sind. Jeder Job $i$ hat dazu eine Startzeit $s_i$ und eine Endzeit $f_i$, oft kurz als $(s_i,f_i)$ angegeben, wobei hier offene Intervalle verwendet werden (d.h., Job (1,3) und Job (3,5) sind überlappungsfrei). Das Ziel ist es dabei, möglichst viele kompatible Jobs auszuwählen.
+
+Es gibt u.A. die folgenden Auswahlregeln:
+
+\begin{itemize}
+	\item[($R1$)] frühester Startzeitpunkt $s_i$
+	\item[($R2$)] kürzester Belegungszeitraum $f_i - s_i$
+	\item[($R3$)] wenigste Überlappungen mit anderen Intervallen
+	\item[($R4$)] frühester Fertigstellungszeitpunkt $f_i$
+\end{itemize}
+
+Der grundsätzliche Algorithmus sieht wie folgt aus:
+
+\begin{algo}{Interval Scheduling}
+	\textbf{Eingabe:} Anfragen $M= \{1, \dots , n\}$ für Zeitintervalle $(s_1,f_1), \dots,(s_n,f_n)$
+	
+	\textbf{Ausgabe:} Kompatible Teilmenge $A$ der Menge $M$
+	\tcblower
+	
+	$A = \{ \}$
+	
+	\textbf{WHILE} (Die Menge $M$ nicht leer ist)
+	
+	\tab Wähle eine Anfrage $i$ aus $M$ gemäß einer Auswahlregel $(R_*)$
+	
+	\tab Füge $i$ zu $A$ hinzu
+	
+	\tab Lösche alle mit $i$ überlappenden Intervalle aus $M$, inklusive $i$
+	
+	\textbf{RETURN} $A$
+\end{algo}
+
+Es wird hier davon ausgegangen, dass innerhalb des Algorithmus nicht mehrere, sondern immer nur eine Auswahlregel angewandt wird.
+
+\subsubsection{Optimaler Inveral Scheduling Algorithmus}
+
+Der Earliest-Finish-Time-First Algorithmus, der der Auswahlregel $(R4)$ von oben entspricht, liefert stets eine optimale Lösung. Die folgende Implementierung hat dabei die Laufzeit von $\mathcal{O}(n \cdot \log (n))$:
+
+\begin{algo}{Earliest-Finish-Time-First}
+	\textbf{Eingabe:} Anfragen $M= \{1, \dots , n\}$ für Zeitintervalle $(s_1,f_1), \dots,(s_n,f_n)$
+	
+	\textbf{Ausgabe:} Kompatible Teilmenge $A$ der Menge $M$
+	\tcblower
+	
+	Sortiere und re-indiziere die Intervalle, sodass $f_1 \leq \dots \leq f_n$
+	
+	$A = \{ \}$
+	
+	\textbf{FOR} ($j= 1$ \textbf{TO} $n$)
+	
+	\tab \textbf{IF} ($j$ ist kompatible mit $A$)
+	
+	\textbf{RETURN} $A$
+\end{algo}
+
+An dieser Stelle nicht davon verwirren lassen, dass wir zwei verschiedene Implementierungen für den gleichen Algorithmus verwenden. Oft gibt es mehrere Algorithmen, die das gleiche Konzept umsetzen. Hier unterscheiden sich die beiden Varianten dadurch, dass bei der zweiten die Intervalle vorher noch sortiert werden, was bei der ersten nicht gemacht wird. 
+
+ 
+\subsection{Intervall Partitioning}
+
+Das Intervall Partitioning Problem ist ähnlich zu dem Intervall Scheduling Problem, jedoch ist es hier das Ziel, \textit{alle} Jobs so auf mehrere (nicht nur eine) Ressource aufzuteilen, dass alle Jobs auf einer Ressource kompatibel sind und wir möglichst wenig Ressourcen verwenden.
+
 
 \section{Graphentheorie}
 
@@ -568,6 +701,6 @@ Im folgenden wird meist von der Größe oder Länge der Eingabe als $n$ gesproch
 
 \section{Matching Markets}
 
-\section{Prolog}
+\section{Komplexitätstheorie}
 
 \end{document}
