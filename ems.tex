@@ -489,7 +489,7 @@ Insertion Sort ist ein Sortierverfahren, dass jedes Element eines Arrays an die 
 	\end{algo}
 \end{halfboxr}
 
-\todo{ Algorithmenboxen schöner machen }
+\todo[inline]{ Algorithmenboxen schöner machen }
 
 \footnotetext{Das \textbf{DOWN TO} entscheidet sich von den bisherigen \textbf{FOR \dots TO} nur dadurch, dass wir die Variable anstatt hochzuzählen, bei einem \textbf{DOWN TO} nach jeder Iteration der Schleife um eins runterzählen.} 
 
@@ -579,7 +579,7 @@ Im folgenden wird meist von der Größe oder Länge der Eingabe als $n$ gesproch
 	%\draw[color=orange] plot (\x,{0.05*exp(\x)}) node[right] {$f(x) = \frac{1}{20} \mathrm e^x$};
 \end{tikzpicture}
 
-\todo{Venn-Diagramm mit Beziehungen der einzelnen Mengen}
+\todo[inline]{Venn-Diagramm mit Beziehungen der einzelnen Mengen}
 
 Laufzeit einiger Algorithmen:
 
@@ -823,7 +823,9 @@ Wir haben erneut Auswahlregeln, aber da wir nun keine festen Startzeitpunke habe
 
 \section{Graphentheorie}
 
-\subsection{Grundlegende Notation}
+\subsection{Der langweilige Teil - Definitionen}
+
+\subsubsection{Grundlegende Notation}
 
 Es folgen ein paar langweilige Definitionen.
 
@@ -898,7 +900,7 @@ Es folgen ein paar langweilige Definitionen.
 	
 \end{thirdboxr}
 
-\subsection{Wege, Kreise, Bäume}
+\subsubsection{Wege, Kreise, Bäume}
 
 Es folgen weitere, noch mehr langweilige Definitionen
 
@@ -908,39 +910,168 @@ Es folgen weitere, noch mehr langweilige Definitionen
 		Ein \emph{Weg} (oder \emph{Pfad}) in einem [gerichteten] Graphen $G = (V,E)$ [$G = (V,A)$] von einem Knoten $v$ zu einem Knoten $w$ ist eine Sequenz an Knoten $v, x_1, x_2, \dots , x_n, w$, wobei je zwei aufeinanderfolgende Knoten durch eine [gerichtete] Kante verbunden sind.
 	\end{defi}
 	
-	\begin{defi}{Vollständig/Symmetrisch}
-		Ein Graph $G$ heißt \emph{vollständig}, wenn jedes Knotenpaar durch eine Kante verbunden ist.
-		
-		Ein gerichteter Graph heißt \emph{symmetrisch}, wenn für jede Kante $(u,v) \in A$ auch die ``Rückweg-Kante'' $(v,u) \in A$.
+	\begin{defi}{Einfache Wege}
+		Ein Weg ist \emph{einfach}, wenn alle Knoten auf dem Weg paarweise unterschiedlich sind.
 	\end{defi}
 \end{thirdboxl}%
 \begin{thirdboxm}
 	\vspace{-\baselineskip}		
-	\begin{defi}{Grad eines Knoten}
-		Der \emph{Grad} $\deg (u)$ eines Knoten ist die Anzahl der Kanten, die an ihn angrenzen. Schlaufen werden doppelt gezählt
+	\begin{defi}{Zusammenhang (ungerichtete Graphen)}
+		Ein Knoten $w$ ist vom Knoten $v$ aus \emph{erreichbar}, wenn es einen Weg von $v$ nach $w$ gibt.
 		
-		Bei gerichteten Graphen unterscheidet man zwischen der Anzahl der eingehenden Kanten $\deg ^- (u)$ und der ausgehenden Kanten $\deg ^+ (u)$.
+		Ein ungerichteter Graph $G= (V,E)$ ist \emph{zusammenhängend}, wenn jeder Knoten von jedem anderen Knoten aus erreichbar ist.
+		
+		Eine \emph{Zusammenhangskomponente} eines ungerichteten Graphen $G$ ist ein maximal zusammenhängender Teilgraph.
 	\end{defi}
 	
-	\begin{theo}{Handshaking Lemma}
-		In einem ungerichteten Graphen $G = (V,E)$ gilt:
-		
-		$\sum_{v \in V} \deg (v) = 2 \cdot |E|$
-	\end{theo}
 \end{thirdboxm}%
 \begin{thirdboxr}
 	\vspace{-\baselineskip}	
-	\begin{defi}{induzierter Teilgraph}
-		Ein Teilgraph eines Graphe $G = (V,E)$ ist ein Graph $G' = (V',E')$ mit $V'$ ist eine Teilmenge von $V$ und $E'$ ist eine Teilmenge von $E$. 
+	\begin{defi}{Zusammenhang (gerichtete Graphen)}
+		Ein Knoten $w$ ist vom Knoten $v$ aus \emph{erreichbar}, wenn es einen Weg von $v$ nach $w$ gibt.
 		
-		Der Teilgraph $G' = (V',E')$ heißt induzierter Teilgraph, wenn $E'$ alle Kanten aus $E$ enthält, deren beide Endpunkte in $V'$ sind.
-	\end{defi}
-	
-	\begin{defi}{Schlaufe}
-		Eine Kante mit zwei Identischen Endknoten wird \emph{Schlaufe} oder \emph{Schlinge} genannt.
+		Ein gerichteter Graph $G= (V,A)$ ist \emph{stark zusammenhängend}, wenn jeder Knoten von jedem anderen Knoten aus erreichbar ist.
+		
+		Eine \emph{starke Zusammenhangskomponente} eines gerichteten Graphen $G$ ist ein maximal stark zusammenhängender Teilgraph.
 	\end{defi}
 	
 \end{thirdboxr}
+
+\todo[inline]{Beispiele dazu?}
+
+\begin{halfboxl}
+	\vspace{-\baselineskip}
+	\begin{defi}{Kreise}
+		Ein \emph{Kreis} in einem ungerichteten Graph $G=(V,E)$ ist ein Weg mit gleichem Start- und Endknoten
+		
+		Ein Kreis ist \emph{einfach}, wenn die Zwischenknoten paarweise verschieden sind.
+	\end{defi}
+
+	\begin{theo}{Relation von Bäumen und Wäldern}
+		Ein Baum-Graph ist auch stets ein Wald, aber ein Wald-Graph ist nicht immer auch ein Baum, da ein Wald aus mehreren Bäumen bestehen kann.
+	\end{theo}
+
+	
+\end{halfboxl}%
+\begin{halfboxr}
+	\vspace{-\baselineskip}
+	\begin{defi}{Bäume und Wälder}
+		Ein ungerichteter (Teil-)Graph $G= (V,E)$ wird \emph{Baum} genannt, wenn $G$ kreisfrei und zusammenhängend ist.
+		
+		Ein kreisfreier ungerichteter Graph $G=(V,E)$ wird \emph{Wald} genannt.
+	\end{defi}
+
+	\begin{theo}{Knotenzahl eines Baumes}
+		Ein Baum mit $n$ Knoten hat $n-1$ Kanten
+	\end{theo}
+
+	
+\end{halfboxr}
+
+\subsubsection{Darstellung von Graphen}
+
+Es gibt mehrere Möglichkeiten, Graphen zu kodieren, das heißt einfach verständlich für Menschen bzw. Computer aufzuschreiben:
+
+	\begin{defi}{Adjazenmatrix}
+		Graphen können mittels \emph{Adjazenzmatrizen} repräsentiert und gespeichert werden:
+		
+		\begin{itemize}
+			\item Die Adjazenzmatrix zum Graphen $G = (V,E)$ [$G=(V,A)$] mit Knotenmenge $V= \{1,\dots, n\}$ ist eine Matrix, deren Einträge entweder 0 oder 1 sind, und die $n$ Zeilen und $n$ Spalten hat, wobei
+			
+			\item der Eintrag in Zeile $i$, Spalte $j$ genau dann $1$ ist, wenn die beiden Knoten $i$ und $j$ durch eine ungerichtete Kante verbunden sind bzw. eine gerichtete Kante von $i$ nach $j$ verläuft.
+		\end{itemize}
+	
+	Adjazenzmatrizen eignen sich gut für die Verarbeitung in Programmen.
+	\end{defi}
+
+\begin{halfboxl}
+	\vspace{-\baselineskip}		
+	\begin{defi}{Explizite Angabe}
+		Die explizite Angabe meint, dass man einen Graphen $G= (V,E)$ durch explizites Aufschreiben der Mengen $V$ und $E$ [bzw. $A$] angibt.
+		
+		Beispiel: 
+	\end{defi}
+	
+\end{halfboxl}%
+\begin{halfboxr}
+	\vspace{-\baselineskip}	
+	\begin{defi}{Skizze}
+		Die Angabe durch Skizze meint, den Graphen aufzuzeichnen. Diese Art eignet sich sehr gut für Menschen.
+		
+		Beispiel: 
+	\end{defi}
+	
+\end{halfboxr}
+\todo[inline]{Beispiel} 
+
+Es gibt außerdem noch die Möglichkeit, statt Adjazenmatrizen auch Adjazenzlisten zu verwenden, die etwas effizienter im Speicherverbrauch sind (folgt eventuell noch an dieser Stelle).
+
+\subsection{Der spaßige Teil - Algorithmen}
+
+\subsubsection{Breitensuche}
+
+Breitensuche ist für viele (``kleine'') Graphenprobleme die Allzweckwaffe schlechthin. Anwendungen sind zum Beispiel die Bestimmung von Zusammenhangskomponenten, Topologische Sortierung, Kritische-Pfad-Analyse, kürzeste-Wege Suche (\emph{nur} wenn alle Kanten Gewicht 1 haben) oder die Verifikation von Regular Safety Properties für endliche Transitionssysteme (\textit{letzteres ist nicht Teil dieser Veranstaltung}). Die Idee ist, ausgehend von einem Startknoten $s$, nacheinander alle Knoten Schicht für Schicht hinzuzufügen.
+
+\begin{algo}{Breitensuche (BFS)}
+	\textbf{Eingabe:} Ein Graph $G$ sowie einen Startknoten $s$
+	
+	\textbf{Ausgabe:} Knoten in den einzelnen Schichten ausgehen von Startknoten $s$
+	
+	\tcblower
+	
+	Markiere alle Knoten als ``unbesucht''
+	
+	Markiere Startknoten $s$ als ``besucht'' und setze $L_0 = \{s\}$
+	
+	$i=0$
+	
+	\textbf{WHILE} (es noch unbesuchte Narchbarn von Knoten in $L_i$ gibt)
+	
+	\tab $L_{i+1} = \{\texttt{alle unbesuchten Nachbarn von } L_i \}$
+	
+	\tab Markiere die Knoten in $L_{i+1}$ als ``besucht''
+	
+	\tab $i = i+1$
+	
+	\textbf{RETURN} $L_k$ $\forall k \in \{0, \dots, i\}$
+\end{algo}
+
+\subsubsection{Dijkstra}
+
+Der Dijkstra-Algorithmus steht der Breitensuche im Coolness-Faktor um nichts nach, und wird vor allem zum Lösen des kürzeste-Wege Problem benutzt:
+
+\begin{defi}{Kürzeste-Wege Problem}
+	\begin{itemize}
+		\item Gerichteter Graph $G= (V,A)$
+		\item Kantenlänge $c(a)\geq 0$ auf allen Kanten $a \in A$
+		\item Ein Startknoten $s \in V$ und einen Zielknoten $t \in V$
+	\end{itemize}
+
+	Gesucht ist ein kürzester Weg von $s$ zu $t$.
+\end{defi}
+
+Damit Dijkstra jedoch seine ganze Coolness entfalten kann, müssen ein paar Bedingungen für einen Graphen $G$ gelten:
+
+\begin{theo}{Voraussetzungen für Dijkstra}
+\begin{itemize}
+	\item Alle Knoten in $G = (V,A)$ sind von $s$ aus erreichbar
+	\item Es gibt weder Schleifen, noch parallele Kanten
+	\item Es gibt keine negativen Kantengewichte $c(a)$ für $a \in A$
+\end{itemize}
+
+Die ersten beiden Voraussetzungen sind durch Preprocessing immer möglich herzustellen.
+
+\end{theo}
+
+Der Algorithmus verwendet außerdem eine eigene Notation (weil er halt so cool ist):
+
+\begin{defi}{Notation für Dijkstra}
+	\begin{itemize}
+		\item $S$ alle ...
+	\end{itemize}
+\end{defi}
+
+\todo[inline]{die beiden Blöcke nebeneinander packen}
 
 \section{Minimale Spannbäume}
 
