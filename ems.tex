@@ -28,6 +28,8 @@ Eltern haften für ihre Kinder.
 
 \section{Stabile Matchings}
 
+\subsection{Das Stable Marriage Problem}
+
 \begin{halfboxl}
 	\vspace{-\baselineskip}
 	\begin{defi}{Stable Marriage Problem}
@@ -540,7 +542,7 @@ Im folgenden wird meist von der Größe oder Länge der Eingabe als $n$ gesproch
 	\begin{defi}{$\Omega(f)$}
 		$\Omega(f)$ ist die Menge der Funktionen $g$, die nicht langsamer wachsen als $f$. Wenn $g\in \Omega(f)$, ist $c \cdot f(n)$ eine untere Schranke für $g(n)$. Formal aufgeschrieben:
 		
-		$\Omega(f):=\{g \in \mathbb{{R}^{\mathbb{N}}_+} | \exists c>0. \exists n_0 \in \mathbb{N}. \forall n \geq n_0 . g(n) \geq c \cdot f(n) \}$
+		$\Omega(f):=\{g \in \mathbb{{R}^{\mathbb{N}}_+} | \exists c>0. \exists n_0 \in \mathbb{N}. \forall n \geq n_0 $ . $g(n) \geq c \cdot f(n) \}$
 		
 	\end{defi}
 	
@@ -625,10 +627,14 @@ Der Cashier's Algorithmus gibt für einen Geldbetrag, das mit Münzen verschiede
 	\tab \textbf{RETURN} $S$
 \end{algo}
 
-\paragraph{Bemerkung zur Optimalität:} Der Cashier's Algorithmus liefert nicht immer die optimale Lösung, z.B. würde der Algorithmus mit Münzen von Wert 3 und 5 bei einem Betrag von $x=9$ ``keine Lösung'' ausgeben, obwohl drei 3-Münzen möglich sind. 
+\begin{theo}{Nicht-Optimalität des Chashier's Algorithmus} Der Cashier's Algorithmus liefert \textit{nicht} immer die optimale Lösung, z.B. würde der Algorithmus nur mit Münzen von Wert 3 und 5 bei einem Betrag von $x=9$ ``keine Lösung'' ausgeben, obwohl drei 3-Münzen möglich sind. 
+
+\end{theo}
 
 \subsection{Interval Scheduling}
-Beim Interval Scheduling geht es darum, Anfragen oder Jobs für eine Ressource so auszuwählen, dass sich die Jobs überlappungsfrei sind. Jeder Job $i$ hat dazu eine Startzeit $s_i$ und eine Endzeit $f_i$, oft kurz als $(s_i,f_i)$ angegeben, wobei hier offene Intervalle verwendet werden (d.h., Job (1,3) und Job (3,5) sind überlappungsfrei). Das Ziel ist es dabei, möglichst viele kompatible Jobs auszuwählen.
+Beim Interval Scheduling geht es darum, Anfragen oder Jobs für eine Ressource so auszuwählen, dass sich die Jobs überlappungsfrei sind. Jeder Job $i$ hat dazu eine Startzeit $s_i$ und eine Endzeit $f_i$, oft kurz als $(s_i,f_i)$ angegeben, wobei hier offene Intervalle verwendet werden (d.h., Job (1,3) und Job (3,5) sind überlappungsfrei). Das Ziel ist es dabei, möglichst viele kompatible Jobs auszuwählen. \todo{Insert Defi Block here}
+
+\subsubsection{Interval Scheduling Algorithmus}
 
 Es gibt u.A. die folgenden Auswahlregeln:
 
@@ -641,7 +647,7 @@ Es gibt u.A. die folgenden Auswahlregeln:
 
 Der grundsätzliche Algorithmus sieht wie folgt aus:
 
-\begin{algo}{Interval Scheduling}
+\begin{algo}{Intervall Scheduling}
 	\textbf{Eingabe:} Anfragen $M= \{1, \dots , n\}$ für Zeitintervalle $(s_1,f_1), \dots,(s_n,f_n)$
 	
 	\textbf{Ausgabe:} Kompatible Teilmenge $A$ der Menge $M$
@@ -662,7 +668,7 @@ Der grundsätzliche Algorithmus sieht wie folgt aus:
 
 Es wird hier davon ausgegangen, dass innerhalb des Algorithmus nicht mehrere, sondern immer nur eine Auswahlregel angewandt wird.
 
-\subsubsection{Optimaler Inveral Scheduling Algorithmus}
+\subsubsection{Optimaler Inverall Scheduling Algorithmus}
 
 Der Earliest-Finish-Time-First Algorithmus, der der Auswahlregel $(R4)$ von oben entspricht, liefert stets eine optimale Lösung. Die folgende Implementierung hat dabei die Laufzeit von $\mathcal{O}(n \cdot \log (n))$:
 
@@ -676,7 +682,7 @@ Der Earliest-Finish-Time-First Algorithmus, der der Auswahlregel $(R4)$ von oben
 	
 	$A = \{ \}$
 	
-	\textbf{FOR} ($j= 1$ \textbf{TO} $n$)
+	\textbf{FOR} ( $j = 1$ \textbf{TO} $n$)
 	
 	\tab \textbf{IF} ($j$ ist kompatible mit $A$)
 	
@@ -688,10 +694,253 @@ An dieser Stelle nicht davon verwirren lassen, dass wir zwei verschiedene Implem
  
 \subsection{Intervall Partitioning}
 
-Das Intervall Partitioning Problem ist ähnlich zu dem Intervall Scheduling Problem, jedoch ist es hier das Ziel, \textit{alle} Jobs so auf mehrere (nicht nur eine) Ressource aufzuteilen, dass alle Jobs auf einer Ressource kompatibel sind und wir möglichst wenig Ressourcen verwenden.
+Das Intervall Partitioning Problem ist ähnlich zu dem Intervall Scheduling Problem, jedoch ist es hier das Ziel, \textit{alle} Jobs so auf mehrere (nicht nur eine) Ressource aufzuteilen, dass alle Jobs auf einer Ressource kompatibel sind und wir möglichst wenig Ressourcen verwenden. \todo{insert defi block here}
 
+\subsubsection{Intervall Partitioning Algorithmus}
+
+Analog zum Scheduling gibt es hier auch folgende Auswahlregeln:
+
+\begin{itemize}
+	\item[($R1$)] frühester Startzeitpunkt $s_i$
+	\item[($R2$)] kürzester Belegungszeitraum $f_i - s_i$
+	\item[($R3$)] wenigste Überlappungen mit anderen Intervallen
+	\item[($R4$)] frühester Fertigstellungszeitpunkt $f_i$
+\end{itemize}
+
+Der grundsätzliche Algorithmus sieht dabei wie folgt aus:
+
+\begin{algo}{Intervall Partitioning}
+	\textbf{Eingabe:} Anfragen $M= \{1, \dots , n\}$ für Zeitintervalle $(s_1,f_1), \dots,(s_n,f_n)$
+	
+	\textbf{Ausgabe:} Schedule $S$ bei dem alle paarweise überlappenden Intervalle unterschiedlichen Ressourcen zugewiesen wurden
+	\tcblower
+	
+	Sortiere und re-indiziere die Anfragen in $M$ gemäß der ausgewählten Prioritätsregel $(R_*)$. Nummeriere die Anfragen dann mit $1,\dots, n$ durch.
+	
+	Setze $d=0$
+	
+	\textbf{FOR} ($i = 1$ \textbf{TO} $n$)
+	
+	\tab \textbf{IF} ($i$ kann einer der Ressourcen $d$ kompatibel zugewiesen werden)
+	
+	\tab\tab Weise $i$ einer solchen Ressource zu
+	
+	\tab \textbf{ELSE}
+	
+	\tab\tab Stelle eine weitere Ressource $d+1$ zur Verfügung
+	
+	\tab\tab Weise $i$ dieser neuen Ressource $d+1$ zu
+	
+	\tab\tab $d= d+1$
+
+	
+	\textbf{RETURN} den resultierenden Schedule $S$
+\end{algo}
+
+\begin{theo}{Optimaler Intervall Partitioning Schedule}
+	Die Auswahlregel $(R1)$- frühester Startzeitpunkt - liefert stets einen optimalen Schedule. Sie wird auch \emph{Earliest-Start-Time-First} gennant. Bei den anderen Auswahlregeln wird \emph{nicht} immer ein optimale Schedule bestimmt. 
+\end{theo}
+
+\begin{halfboxl}
+	\vspace{-\baselineskip}
+	\begin{defi}{Tiefe einer Instanz}
+		Die \emph{Tiefe} einer Instanz $M$ (kurz: Tiefe($M$)) ist die maximale Kardinalität einer Teilmenge $A$ der Anfragen aus $M$, sodass es einen Zeitpunkt $t$ gibt, der in allen Intervallen aus $A$ enthalten ist. 
+		
+		Also gibt die Tiefe die Anzahl der Ressourcen, die wir \emph{mindestens} für einen Schedule benötigen. 
+	\end{defi}
+\end{halfboxl}%
+\begin{halfboxr}
+	\vspace{0.2cm}
+	\begin{tightcenter}
+		\begin{tikzpicture}[scale=.58]%[x=1.7cm,y=1cm]
+		\draw[->] (-.5,1) -- (13.5,1) node[below left] {Zeit};
+		
+		\draw (.5,1.1) rectangle (2,2) node[midway] {$a$};
+		\draw (3,1.1) rectangle (5,2) node[midway] {$b$};
+		\draw (6,1.1) rectangle (7.5,2) node[midway] {$c$};
+		\draw (8,1.1) rectangle (12,2) node[midway] {$d$};
+		
+		\draw (6.5,2.1) rectangle (7.5,3) node[midway] {$e$};
+		\draw (8,2.1) rectangle (9,3) node[midway] {$f$};
+
+		
+		\draw (3,3.1) rectangle (5,4) node[midway] {$g$};
+		\draw (6,3.1) rectangle (7,4) node[midway] {$h$};
+		
+		\draw (.5,4.1) rectangle (3.5,5) node[midway] {$i$};
+		\draw (4,4.1) rectangle (5.5,5) node[midway] {$j$};
+		\draw (6.5,4.1) rectangle (8.5,5) node[midway] {$k$};
+		\draw (9.5,4.1) rectangle (13,5) node[midway] {$l$};
+
+		\draw[color=red] (6.75, 5.25) -- (6.75,0.5)  node[below] {Tiefe = 4};
+		
+		\end{tikzpicture}
+	\end{tightcenter}
+\end{halfboxr}
+
+\subsection{Scheduling zur Minimierung von Verspätung}
+
+Als letztes Thema in diesem Kapitel betrachten wir folgendes Problem: Es gibt wie vorher auch $n$ Jobs, die aber wieder nur auf einer Ressource abgearbeitet werden sollen. Es können die Jobs nur nacheinander abgearbeitet werden, nicht gleichzeitig und alle Jobs können jederzeit begonnen werden, haben also keinen Startzeitpunkt wie zuvor. Jeder Job $j$ hat eine Bearbeitungszeit $p_j$ und eine Deadline $d_j$, zu der er möglichst fertig sein soll. Wenn ein Job $j$ also zum Zeitpunkt $s_j$ beginnt, ist er zum Zeitpunkt $f_j = s_j + p_j$, also Startzeit plus Bearbeitungszeit, fertig. Falls der Job nach seiner Deadline abgeschlossen wurde, hat er eine Verspätung von $f_j - d_j$, also Fertig-Zeitpunkt minus Deadline. Ist der Job vor seiner Deadline fertig geworden, weisen wir ihm die Verspätung 0 zu. Kurz gefasst hat jeder Job also die Verspätung $l_j = \max \{0, f_j - d_j\}$.  \todo{Das ganze in eine Definition packen}
+
+Das Ziel ist es nun, einen Schedule zu finden, sodass die maximale Verspätung, die irgendein Job $j$ hat, zu minimieren (nicht die Summe der Verspätungen aller Jobs!). Mathematisch: Minimiere $L = \max_{j \in J} \{l_j\}$. Es ist hier also \emph{besser}, wenn alle Jobs eine Verspätung von 2 Zeiteinheiten hätten, als wenn ein Job eine Verspätung von 4 Einheiten hat, aber alle anderen vor ihrer Deadline fertig geworden sind. 
+
+Wir haben erneut Auswahlregeln, aber da wir nun keine festen Startzeitpunke haben, fällt ``Earliest-Start-Time-First'' weg:
+
+\begin{itemize}
+	\item Shortest-Processing-Time-First: Schedule die Aufträge aufsteigend in der Reihenfolge ihrer Bearbeitungszeiten $p_j$, angefangen beim kürzesten
+	\item Earliest-Deadline-First: Schedule die Aufträge aufsteigend in der Reihenfolge ihrer Deadlines $d_j$
+	\item Smallest-Slack: Schedule die Aufträge austeigend in der Reihenfolge ihres ``Slack'' $d_j - p_j$
+\end{itemize} 
+
+\begin{theo}{Optimalität von Earliest-Deadline-First}
+	Für die minimierung von Verspätung ist Earliest-Deadline-First die optimale Auswahlregel, die anderen beiden generieren nicht immer optimale Schedules
+\end{theo}
+
+\begin{algo}{Earliest-Deadline-First (Minimierung von Verspätungen)}
+	\textbf{Eingabe:} Aufträge $M= \{1, \dots , n\}$ mit Processing Time $p_j$ und Deadline $d_j$
+	
+	\textbf{Ausgabe:} Schedule $S$ 
+	
+	\tcblower
+	
+	Sortiere und re-indiziere die $n$ Aufträge in aufsteigender Reihenfolge der Deadlines $d_j$
+	
+	Setze $t=0$
+	
+	\textbf{FOR} ($i = 1$ \textbf{TO} $n$)
+	
+	\tab Schedule Auftrag $j$ im Intervall $[t, t+ p_j]$
+	
+	\tab $s_j = t$ \textit{ \color{gray} // speichere Start- und }
+	
+	\tab $f_j = s_j + p_j$  \textit{ \color{gray} // Endzeitpunkt ab }
+	
+	\tab $t = t + p_j$  \textit{ \color{gray} // setze $t$ auf den nächsten freien Zeitpunkt }
+	
+	
+	\textbf{RETURN} den resultierenden Schedule $S$
+\end{algo}
 
 \section{Graphentheorie}
+
+\subsection{Grundlegende Notation}
+
+Es folgen ein paar langweilige Definitionen.
+
+\begin{halfboxl}
+	\vspace{-\baselineskip}
+	\begin{defi}{Gerichteter Graph}
+		Ein gerichteter Graph (auch: Digraph) $G$ ist ein Paar $(V,A)$ mit:
+		
+		\begin{itemize}
+			\item Einer endlichen Menge $V$ von Knoten (``Vertices'')
+			
+			\item Einer Menge $A$ von \emph{geordneten} Paaren (Tupel) von Knoten, die (gerichtete) Kanten oder Bögen (``arcs'') genannt werden.
+		\end{itemize}
+	
+	Man verwendet gerichtete Graphen zur Darstellung asymmetrischer Beziehungen zwischen zwei Knoten, z.B. Einbahnstraßen 
+	\end{defi}
+\end{halfboxl}%
+\begin{halfboxr}
+	\vspace{-\baselineskip}
+	\begin{defi}{Ungerichteter Graphen}
+		Ein ungerichteter Graph $G$ ist ein Paar $(V,E)$ mit:
+		
+		\begin{itemize}
+			\item Einer endlichen Menge $V$ von Knoten (``Vertices'')
+			
+			\item Einer Menge $A$ von \emph{ungeordneten} Paaren von Knoten, die (gerichtete) Kanten (``edges'') genannt werden.
+		\end{itemize}
+	
+	Man verwendet ungerichtete Graphen zur Darstellung symmetrischer Beziehungen zwischen zwei Knoten, z.B. Freundschaften
+	\end{defi}
+\end{halfboxr}
+
+\begin{thirdboxl}
+	\vspace{-\baselineskip}	
+	\begin{defi}{Adjazent/benachbart}
+	Sind $u$ und $v$ die beiden Endknoten einer [gerichteten] Kante $e = \{u,v\}$ [$a= (u,v)$], so ist $v$ \emph{adjazent} oder \emph{``benachbart''} zu $u$.
+	
+	Die Knoten $u$ und $v$ sind dann \emph{inzident} zur [gerichteten] Kante $e = \{u,v\}$ [$a= (u,v)$].
+	\end{defi}
+
+	\begin{defi}{Vollständig/Symmetrisch}
+		Ein Graph $G$ heißt \emph{vollständig}, wenn jedes Knotenpaar durch eine Kante verbunden ist.
+		
+		Ein gerichteter Graph heißt \emph{symmetrisch}, wenn für jede Kante $(u,v) \in A$ auch die ``Rückweg-Kante'' $(v,u) \in A$.
+	\end{defi}
+\end{thirdboxl}%
+\begin{thirdboxm}
+	\vspace{-\baselineskip}		
+	\begin{defi}{Grad eines Knoten}
+		Der \emph{Grad} $\deg (u)$ eines Knoten ist die Anzahl der Kanten, die an ihn angrenzen. Schlaufen werden doppelt gezählt
+		
+		Bei gerichteten Graphen unterscheidet man zwischen der Anzahl der eingehenden Kanten $\deg ^- (u)$ und der ausgehenden Kanten $\deg ^+ (u)$.
+	\end{defi}
+
+	\begin{theo}{Handshaking Lemma}
+		In einem ungerichteten Graphen $G = (V,E)$ gilt:
+		
+		$\sum_{v \in V} \deg (v) = 2 \cdot |E|$
+	\end{theo}
+\end{thirdboxm}%
+\begin{thirdboxr}
+	\vspace{-\baselineskip}	
+	\begin{defi}{induzierter Teilgraph}
+		Ein Teilgraph eines Graphe $G = (V,E)$ ist ein Graph $G' = (V',E')$ mit $V'$ ist eine Teilmenge von $V$ und $E'$ ist eine Teilmenge von $E$. 
+		
+		Der Teilgraph $G' = (V',E')$ heißt induzierter Teilgraph, wenn $E'$ alle Kanten aus $E$ enthält, deren beide Endpunkte in $V'$ sind.
+	\end{defi}
+	
+	\begin{defi}{Schlaufe}
+		Eine Kante mit zwei Identischen Endknoten wird \emph{Schlaufe} oder \emph{Schlinge} genannt.
+	\end{defi}
+	
+\end{thirdboxr}
+
+\subsection{Wege, Kreise, Bäume}
+
+Es folgen weitere, noch mehr langweilige Definitionen
+
+\begin{thirdboxl}
+	\vspace{-\baselineskip}	
+	\begin{defi}{Weg/Pfad}
+		Ein \emph{Weg} (oder \emph{Pfad}) in einem [gerichteten] Graphen $G = (V,E)$ [$G = (V,A)$] von einem Knoten $v$ zu einem Knoten $w$ ist eine Sequenz an Knoten $v, x_1, x_2, \dots , x_n, w$, wobei je zwei aufeinanderfolgende Knoten durch eine [gerichtete] Kante verbunden sind.
+	\end{defi}
+	
+	\begin{defi}{Vollständig/Symmetrisch}
+		Ein Graph $G$ heißt \emph{vollständig}, wenn jedes Knotenpaar durch eine Kante verbunden ist.
+		
+		Ein gerichteter Graph heißt \emph{symmetrisch}, wenn für jede Kante $(u,v) \in A$ auch die ``Rückweg-Kante'' $(v,u) \in A$.
+	\end{defi}
+\end{thirdboxl}%
+\begin{thirdboxm}
+	\vspace{-\baselineskip}		
+	\begin{defi}{Grad eines Knoten}
+		Der \emph{Grad} $\deg (u)$ eines Knoten ist die Anzahl der Kanten, die an ihn angrenzen. Schlaufen werden doppelt gezählt
+		
+		Bei gerichteten Graphen unterscheidet man zwischen der Anzahl der eingehenden Kanten $\deg ^- (u)$ und der ausgehenden Kanten $\deg ^+ (u)$.
+	\end{defi}
+	
+	\begin{theo}{Handshaking Lemma}
+		In einem ungerichteten Graphen $G = (V,E)$ gilt:
+		
+		$\sum_{v \in V} \deg (v) = 2 \cdot |E|$
+	\end{theo}
+\end{thirdboxm}%
+\begin{thirdboxr}
+	\vspace{-\baselineskip}	
+	\begin{defi}{induzierter Teilgraph}
+		Ein Teilgraph eines Graphe $G = (V,E)$ ist ein Graph $G' = (V',E')$ mit $V'$ ist eine Teilmenge von $V$ und $E'$ ist eine Teilmenge von $E$. 
+		
+		Der Teilgraph $G' = (V',E')$ heißt induzierter Teilgraph, wenn $E'$ alle Kanten aus $E$ enthält, deren beide Endpunkte in $V'$ sind.
+	\end{defi}
+	
+	\begin{defi}{Schlaufe}
+		Eine Kante mit zwei Identischen Endknoten wird \emph{Schlaufe} oder \emph{Schlinge} genannt.
+	\end{defi}
+	
+\end{thirdboxr}
 
 \section{Minimale Spannbäume}
 
