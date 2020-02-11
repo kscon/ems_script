@@ -7,6 +7,7 @@
 \lstset{basicstyle=\ttfamily\footnotesize,breaklines=true}
 
 \newcommand\tab[1][1cm]{\hspace*{#1}}
+\newcommand{\boxspace}{	\vspace{-\baselineskip}	}
 
 \begin{document}
 
@@ -239,6 +240,8 @@ Folgender Graph zeigt eine Iteration innerhalb der \textbf{WHILE} Schleife:
 	verbinde $\{A,Z\}$ und $\{C,W\}$. Die aufgelösten Kanten sind hier grau gefärbt.
 \end{halfboxr}
 
+\todo[inline]{Seitensprung-Dynamik Beispiel weglassen, aber dafür eins bei Gale-Shapley machen?}
+
 \begin{theo}{Korrektheit der Seitensprung-Dynamik}
 	Die Seitensprung-Dynamik terminiert nicht für jede Eingabe. Das heißt es wird nicht für alle Eingaben ein stabiles Matching gefunden. (Wenn man das Beispiel oben weiterführt, landet man irgendwann wieder an der Ausgangsposition).
 \end{theo}
@@ -291,7 +294,7 @@ Ein perfektes Matching ist stabil, wenn entweder
 	\item jeder Mann seine erste Wahl zur Partnerin hat, oder
 	\item jede Frau ihre erste Wahl als Partner hat,
 \end{itemize}
-da so niemand den Anreiz zu einem Seitensprung hätte (dieser Fall tritt jedoch selten ein). Für Gale-Shapley gilt unabhängig davon:
+da so niemand den Anreiz zu einem Seitensprung hätte (dieser Fall tritt jedoch selten ein). Für Gale-Shapley gilt unabhängig davon: \todo{In einen Satz-Block packen}
 
 \begin{theo}{Korrektheit von Gale-Shapley}
 	Gale-Shapley berechnet stets ein stabiles perfektes Matching. 
@@ -1050,6 +1053,8 @@ Der Dijkstra-Algorithmus steht der Breitensuche im Coolness-Faktor um nichts nac
 	Gesucht ist ein kürzester Weg von $s$ zu $t$.
 \end{defi}
 
+\begin{halfboxl}
+	\boxspace
 Damit Dijkstra jedoch seine ganze Coolness entfalten kann, müssen ein paar Bedingungen für einen Graphen $G$ gelten:
 
 \begin{theo}{Voraussetzungen für Dijkstra}
@@ -1063,17 +1068,138 @@ Die ersten beiden Voraussetzungen sind durch Preprocessing immer möglich herzus
 
 \end{theo}
 
-Der Algorithmus verwendet außerdem eine eigene Notation (weil er halt so cool ist):
+\end{halfboxl}%
+\begin{halfboxr}
+	\boxspace
+Der Algorithmus verwendet außerdem eine eigene Notation (weil er cool ist):
 
+	\vspace{\baselineskip}
 \begin{defi}{Notation für Dijkstra}
 	\begin{itemize}
-		\item $S$ alle ...
+		\item $S$: Alle Knoten $u \in V$, für die bereits ein kürzester $s-u$-Weg berechnet wurde
+		\item $d(u)$: Länge eines kürzesten $s-u$-Weges (Distanz)
+		\item $N(S)$: Nachbarn von $S$, d.h. diejenigen Knoten, die von einem Knoten $S$ aus über eine Kante erreichbar sind
 	\end{itemize}
 \end{defi}
+\end{halfboxr}
 
-\todo[inline]{die beiden Blöcke nebeneinander packen}
+Wir kommen zum eigentlichen Algorithmus (der auch die kürzesten Wege ausgibt):
+
+\begin{algo}{Dijkstra-Algorithmus }
+	\textbf{Eingabe:} Ein gerichteter Graph $G = (V,A)$ mit zugeh. Kantenkosten $c(a)$ und einen Startknoten $s$
+	
+	\textbf{Ausgabe:} Den kürzesten Weg $p(v)$ vom Startknoten $s$ zum Knoten $v$ und seine Länge $d(v)$ für jeden Knoten $v \in V$
+	
+	\tcblower
+	
+	Initialisiere $S = \{s\}$ und $d(s) = 0$
+	
+	\textbf{WHILE} ($S \neq V$)
+	
+	\tab \textbf{FOR} (jeden Nachbarn $n \in N(S)$)
+	
+	\tab\tab Berechne vorläufige Distanz $d'(n) = \min \{d(u) + c(u,n) | u \in S, (u,n) \in A \}$
+	
+	\tab Wähle Knoten $n$ mit minimaler vorläufiger Distanz $d'(n)$
+	
+	\tab Füge $n$ zu $S$ hinzu
+	
+	\tab Setze $d(n) = d'(n)$ und $p(n) = u$ \textit{ \color{gray} // Speichere den Vorgänger von $n$ in $p(n)$ ab }
+	
+	\textbf{RETURN} $d(v), p(v)$ $\forall v \in V$
+\end{algo}
+
+Es bietet sich an, die Zwischenschritte von Dijkstra in einer geeigneten Tabelle festzuhalten.
+
+\begin{theo}{Korrektheit von Dijkstra}
+	Zu jeder Zeit während des Algorithmus gilt, für einen Knoten $u \in S$, dass der Wert $d(u)$ der Länge eines kürzesten $s-u$-Weges entspricht.	
+\end{theo}
 
 \section{Minimale Spannbäume}
+
+\subsection{Problemdefinition}
+
+\begin{defi}{Das Minimal-Spanning-Tree (MST) Problem}
+	Gegeben ist ein ungerichteter zusammenhängender Graph $G= (V,E)$ mit nicht-negativen Kantenkosten $c_e$ für alle $e \in E$
+	
+	Gesucht ist eine Kanten-Teilmenge $T \subseteq E$ mit minimalen Kosten $\sum_{e \in T} c_e$, sodass der Teilgraph $G[T] = (V,T)$ zusammenhängend ist. 
+	
+	Dabei gibt es stets eine optimale Lösung $T \subseteq E$, wodurch $G[T] = (V,E)$ ein Baum ist. Deswegen spricht man von Minimalen Spann\emph{bäumen}.
+\end{defi}
+
+\subsection{Hilfreiche Eigenschaften von Bäumen und der Austauschsatz}
+
+\begin{theo}{Eigenschaften eines Baumes}
+	Die folgenden vier Aussagen sind für einen ungerichteten Graphen $G= (V,E)$ äquivalent (d.h. jede Aussage impliziert alle anderen):
+
+	\begin{enumerate}
+		\item $G=(V,E)$ ist ein Baum
+		\item Je zwei Knoten in $V$ sind durch genau einen weg verbunden
+		\item $|T| = |V| - 1$ und der Graph $G = (V,E)$ ist zusammenhängend
+		\item $|T| = |V| - 1$ und der Graph $G = (V,E)$ ist kreisfrei
+	\end{enumerate}
+\end{theo}
+
+\begin{halfboxl}
+	\boxspace
+	
+	\begin{defi}{Abkürzende Schreibweise}
+		Sei $F$ eine Teilmenge von $E$. Weiter seien $e \in F$ und $f \in E\setminus F$. Wir bezeichnen mit:
+		
+		\begin{itemize}
+			\item $F + e$ die Menge, die aus $F$ ensteht, wenn man $e$ hinzufügt,
+			\item $F -f$ die Menge, die aus $F$ entsteht, wenn man $f$ entfernt
+		\end{itemize}
+		
+	\end{defi}
+	
+\end{halfboxl}%
+\begin{halfboxr}
+	\boxspace
+	
+	\begin{defi}{Austauschlemma}
+		Sei $(V,T)$ ein aufspannender Baum im ungerichteten Graphen $G = (V,E)$. Sei $e \in E$ eine Kante, die nicht in $T$ liegt. Dann gilt:
+		
+		\begin{itemize}
+			\item Der Teilgraph $(V,T+e)$ enthält genau einen Kreis $C$
+			\item Für jede Kante $f$ aus dem Kreis $C$ gilt, das $(V,T+e-f)$ ein aufspannender Baum ist.
+		\end{itemize}
+	\end{defi}
+	
+\end{halfboxr}
+
+\todo[inline]{Eventuell Graph wie in Vorlesung für das Austauschlemma?}
+
+\subsection{Algorithmen zum Finden eines MSTs}
+\todo[inline]{Einführende Worte zum Hauptunterschied zwischen Kruskal und Prim}
+
+\subsubsection{Kruskal}
+
+\begin{algo}{Kruskal}
+	\textbf{Eingabe:} Ein ungerichteter zusammenhängender Graph $G = (V,E)$ mit nicht-negativen Kantenkosten $c(e)$ $\forall e \in E$
+	
+	\textbf{Ausgabe:} Eine kostengünstigste Teilmenge $T$ der Kanten, sodass der Teilgraph $G[T] = (V,E)$ zusammen-hängend ist
+	
+	\tcblower
+	
+	$T = \{ \}$
+	
+	$E' = E$
+	
+	\textbf{WHILE} ($|T| < |V| - 1$)
+	
+	\tab Wähle günstigste Kante $e \in E'$
+	
+	\tab Entferne $e$ aus $E'$
+	
+	\tab \textbf{IF} ($T+e$ kreisfrei)
+	
+	\tab\tab Füge $e$ zu $T$ hinzu
+		
+	\textbf{RETURN} $T$
+\end{algo}
+
+\todo[inline]{Kommentare an den Code}
 
 \section{Einführung in Spieltheorie}
 
