@@ -22,6 +22,8 @@ Dieses Dokument hat \emph{nicht} zum Ziel, alleinige Ressource zum Lernen und Ve
 
 Eltern haften für ihre Kinder.
 
+\todo[inline]{Hinweis auf Mathelight, Notationshilfen, Übungsmaterialen, etc.}
+
 \vspace{-0.5\baselineskip}
 {\small{}
 	\paragraph{Hinweis:}
@@ -1171,7 +1173,8 @@ Es bietet sich an, die Zwischenschritte von Dijkstra in einer geeigneten Tabelle
 \todo[inline]{Eventuell Graph wie in Vorlesung für das Austauschlemma?}
 
 \subsection{Algorithmen zum Finden eines MSTs}
-\todo[inline]{Einführende Worte zum Hauptunterschied zwischen Kruskal und Prim}
+
+Zum finden eines MSTs betrachten wir im folgenden zwei Algorithmen, Kruskal und Prim. Kruskal wählt streng nach dem greedy-Prinzip die Kanten in der aufsteigenden Reihenfolge ihrer Kosten und prüft dabei, ob eine neue Kante ein Kreis verursachen würde. Prim hingegen baut den MST anhand von bereits gewählten Kanten mit Hilfe des Schnittes auf.
 
 \subsubsection{Kruskal}
 
@@ -1182,9 +1185,9 @@ Es bietet sich an, die Zwischenschritte von Dijkstra in einer geeigneten Tabelle
 	
 	\tcblower
 	
-	$T = \{ \}$
+	$T = \{ \}$ \textit{ \color{gray} // $T$ enthält diejenigen Kanten, die der Algorithmus wählt }
 	
-	$E' = E$
+	$E' = E$ \textit{ \color{gray} // $E'$ enthält die Kanten, die noch nicht betrachtet wurden }
 	
 	\textbf{WHILE} ($|T| < |V| - 1$)
 	
@@ -1199,9 +1202,224 @@ Es bietet sich an, die Zwischenschritte von Dijkstra in einer geeigneten Tabelle
 	\textbf{RETURN} $T$
 \end{algo}
 
-\todo[inline]{Kommentare an den Code}
+\subsubsection{Prim}
+
+Für den Algorithmus von Prim benötigen wir vorher noch die Definition des Schnitts einer Knotenmenge
+
+\begin{halfboxl}
+	\boxspace
+\begin{defi}{Schnitt}
+	Sei $G=(V,E)$ ein ungerichteter Graph und $S$ eine Teilmenge der Knoten. Die Menge aller Kanten aus $E$, die genau einen Endknoten in $S$ besitzen, wird auch \emph{Schnitt von $S$} oder \emph{Schnitt($S$)} genannt.
+\end{defi}
+
+\end{halfboxl}%
+\begin{halfboxr}
+	\boxspace
+	
+	\begin{theo}{Schnitte und Kreise}
+		Schnitte und Kreise haben stets eine gerade Anzahl an gemeinsamen Kanten
+	\end{theo}
+\end{halfboxr}
+
+\todo[inline]{Beispiel für Schnitt}
+
+\begin{algo}{Prim}
+	\textbf{Eingabe:} Ein ungerichteter zusammenhängender Graph $G = (V,E)$ mit nicht-negativen Kantenkosten $c(e)$ $\forall e \in E$
+	
+	\textbf{Ausgabe:} Eine kostengünstigste Teilmenge $T$ der Kanten, sodass der Teilgraph $G[T] = (V,E)$ zusammen-hängend ist
+	
+	\tcblower
+	
+	$T = \{ \}$ \textit{ \color{gray} // $T$ enthält diejenigen Kanten, die der Algorithmus wählt }
+	
+	Wähle einen beliebigen Startknoten $s$ und setze $S = \{s\}$
+	
+	\textbf{WHILE} ($|T| < |V| - 1$)
+	
+	\tab Wähle günstigste Kante $e$ aus dem Schnitt von $S$
+
+	\tab Füge $e$ zu $T$ hinzu
+	
+	\tab Erweitere $S$ um den fehlenden Endknoten von $e$
+	
+	\textbf{RETURN} $T$
+\end{algo}
+
+\subsubsection{Key-Lemma}
+
+Der folgende Abschnitt behandelt das Key-Lemma, welches für den Beweis der Korrektheit von Kruskal und Prim verwendet wird. Die diese Beweise jedoch über den Umfang dieses Horizont hinaus gehen, soll das Key-Lemma hier nur kurz erwähnt werden.
+
+\begin{defi}{Key-Lemma}
+	Eine Teilmenge $F$ der Kantenmenge $E$ ist \emph{MST-geeignet}, wenn es einen MST gibt, der alle Kanten aus $F$ enthält. 
+	
+	Sei $F$ eine MST-geeignete Kantenmenge bzgl. eine Graphen $G = (V,E)$ mit Kantenkosten $c$. dann gilt für jede Knotenmenge $U$, die eine Zusammenhangskomponente des Graphen $(V,F)$ induziert:
+	
+	Ist $e$ eine günstige Kante im Schnitt von $U$, dann ist $F+e$ MST-geeignet.
+\end{defi}
+
+\todo[inline]{Beispiel Key-lemma}
+
+\begin{theo}{Korrektheit Kruskal und Prim}
+	Kruskal und Prim liefen garantiert immer einen MST.
+\end{theo}
+
+\subsection{Clustering}
+
+\subsubsection{Das Clustering Problem}
+
+\begin{defi}{Das Clustering Problem}
+	Ziel: Gruppiere eine Menge an (vergleichbaren) Objekten, z.B. Websiten oder Bilder.
+	
+	Annahmen:
+	\begin{itemize}
+		\item Es gibt für zwei Objekte $u$ und $v$ einen Distanzwert $d(u,v)$, der die Ähnlichkeit bzw. Unterschiedlichkeit zwischen $u$ und $v$ beschreibt
+		\item Das Distanzmaß ist symmetrisch, d.h. $d(u,v) = d(v,u)$ für alle Objektpaare $\{u,v\}$
+		\item Die Objekte sollen in $k$ Cluster eingeteilt werden
+	\end{itemize}
+\end{defi}
+
+Um ein Merkmal der ``Qualität'' einer Aufteilung von Objekten in $k$ Cluster (``Clustering'') zu haben, betrachten wir hier zunächst das \emph{Max-k-Spacing-Clustering} Problem, um dann die Qualität eines Clustering zu definieren:
+
+\begin{defi}{Max-k-Spacing-Clustering}
+	Gegeben ist eine Menge $U = 1,\dots, n$ an Objekten, eine natürliche Zahl $k$ und die Distanzen $d(u,v)$ für alle Objekte $u,v$ aus $U$
+	
+	Gesucht ist ein Clustering der Objekte in $U$ in $k$ nicht-leere Cluster, sodass die minimale Distanz zwischen zwei Objekten aus unterschiedlichen Clustern möglichst groß ist. 
+	
+	Das Ziel ist es also, die Cluster so festzulegen, dass die (kürzeste) Distanz zwischen zwei Cluster möglichst groß ist
+\end{defi}
+
+\begin{defi}{Spacing}
+	Sei $\mathcal{C} = C_1 \cup \dots \cup C_k$ ein Clustering der Objekte aus $U$ in $k$ paarweise disjunkte Cluster. $C$ wird dann auch ein $k$-Clustering der Menge $U$ genannt.
+	
+	Als \emph{spacing} (oder ``Qualität'') eines Clustering $\mathcal{C} = C_1 \cup \dots \cup C_k$ wird die minimale Distanz zweier Obkekte aus unterschiedlichen Clustern bezeichnet, d.h.,
+	
+	\centering spacing $(\mathcal{C}) = \min \{d(u,v) | u \in C_i, v \in C_j,$ für $i \neq j \}$
+\end{defi}
+
+\todo[inline]{Beispiel für Clustering}
+
+\subsubsection{Max-k-Spacing-Clustering Algorithmus}
+
+\begin{algo}{Max-k-Spacing-Clustering Algorithmus}
+	\textbf{Eingabe:} Menge $U$ an $n$ Objekten, natürliche Zahl $k$, Distanz $d(u,v)$ zwischen allen Knoten $u,v \in U$
+	
+	\textbf{Ausgabe:} Eine Aufteilung der Objekte in $U$ in $k$ nicht-leere Cluster
+	
+	\tcblower
+	
+	Konstruiere einen Graphen mit $n$ Knoten, die die Objekte in $U$ repräsentieren und ohne Kanten.
+	
+	\textit{ \color{gray} // Der initiale Graph besteht somit aus $n$ Zusammenhangskomponenten }
+	
+	\textbf{WHILE} (es mehr als $k$ Zusammenhangskomponenten (Cluster) gibt)
+	
+	\tab Wähle zwei Knoten aus unterschiedlichen Clustern, deren Distanz minimal ist
+	
+	\tab Verbinde diese Knoten durch eine Kante
+	
+	\tab \textit{ \color{gray} // Somit gibt es ein Cluster weniger }
+	
+	\textbf{RETURN} die $k$ Cluster $C_1, \dots, C_k$
+\end{algo}
+
+\begin{halfboxl}
+	\boxspace
+	
+	\begin{theo}{Äquivalenz des Algorithmus zu Kruskal}
+		Der max-k-Spacing-Algorithmus entspricht genau Kruskals-Algorithmus, außer, dass er abbricht, sobald der Graph aus $k$ Clustern besteht.
+		
+		Alternativ kann man auch einen MST berechnen und dann die $k-1$ teuersten Kanten entfernen.
+	\end{theo}
+\end{halfboxl}%
+\begin{halfboxr}
+	\boxspace
+	
+	\begin{theo}{Korrektheit des Clustering Algorithmus}
+		Der Clustering-Algorithmus liefert garantiert immer eine Aufteilung in $k$ Cluster mit maximalen Spacing
+	\end{theo}
+\end{halfboxr}
 
 \section{Einführung in Spieltheorie}
+
+\subsection{Spieltheorie?}
+
+Spieltheorie ist ein Werkzeug mit den viel Situationen des realen Lebens modelliert werden können. Spieltheorie eignet sich besonders dann, wenn mehrere Akteure den gleichen Regeln unterliegen und versuchen, den für sie bestmöglichen Ertrag zu erreichen (zum Beispiel Wegfindung in Verkehrsnetzwerken).
+
+\subsection{Spieltheorie!}
+
+\subsubsection{Strategische Spiele}
+
+\begin{defi}{Modell Strategische Spiele}
+	Strategische Spiele lassen sich folgendermaßen charakterisieren:
+	
+	\begin{itemize}
+		\item Es gibt eine endliche Spielermenge $N = \{1, \dots, n \}$
+		\item Jeder Spieler $i \in N$ verfügt über eine Strategiemenge $X_i$, also die Menge an Optionen, die der Spieler hat
+		\item Jeder Spieler $i$ wählt jeweils eine Strategie $x_i$ aus $X_i$, ohne zu wissen, welche Strategie die übrigen Spieler wählen
+		\item Wenn jeder Spieler $i \in N$ eine Strategie $x_i$ gewählt hat, entsteht so eine Spielsituation (\emph{Profil}) $ x = (x_1, \dots , x_n)$, welche die Spieler unterschiedlich gut oder schlecht für sich einschätzen
+		\item Diese Einschätzung drückt jeder Spieler $i \in N$ mittels seiner Bewertungsfunktion $u_i$ aus, die einfach ausgedrückt jedem (möglichen) Profil $x$ einen reellen Wert $u_i(x)$ zuweist 
+		\item Die Bewertungsfunktion $u_i$ liefert also Aussagen darüber, welche Profile ein Spieler bevorzugt (und auch, welche Strategie ein Spieler möglicherweise wählt, um den gewünschten Spielausgang zu erreichen)
+	\end{itemize}
+\end{defi}
+
+Hier nochmal absolute Klarheit über die verwendete Notation: 
+\begin{itemize}
+	\item $X_i$ ist die Menge aller Strategien für einen Spieler $i$ (Welche Optionen hab ich?)
+	\item $x_i$ ist eine bestimmte Strategie aus der Menge der Strategien für Spieler $i$ 
+	\item $x = (x_1, \dots , x_n)$ ist ein Profil, eine Spielsituation, die durch Wahl der Strategien $x_1, \dots, x_n$ der jeweiligen Spieler $1, \dots, n$ ensteht
+\end{itemize}
+
+Kurzgefasst werden strategische Spiel auch mit $G = (N, (X_i)_{i \in N}, (u_i)_{i \in N} )$ notiert, also der Spielermenge $N$, der Strategiemenge $X_i$ und der Bewertungsfunktion $u_i$ für jeden Spieler $i \in N$. 
+
+Alles klar? Dann können wir ja weitermachen.
+
+\begin{defi}{Kosten- vs. Nutzenspiele}
+	Bei einem strategischen Spiel $G = (N, (X_i)_{i \in N}, (u_i)_{i \in N} )$ kann die Bewertungsfunktion $u_i$ je nach Kontext eine \emph{Kostenfunktion} oder \emph{Nutzenfunktion} sein, aber innerhalb eines Spiels immer nur eine Art von beiden.
+	
+	\textbf{\color{red} Achtung!} Kostenfunktionen wollen von den Spielern stets minimiert werden und Nutzenfunktionen stets maximiert werden. Um welche Art der Bewertungsfunktion es sich handelt, geht meist aus der Beschreibung des Spiels hervor. Die Kenntnis über den Unterschied über diese beiden Arten wird jedoch ab jetzt vorausgesetzt.
+\end{defi}
+
+\begin{theo}{Umwandlung Kosten- in Nutzenspiel und umgekehrt}
+	Jedes Kostenspiel (das heißt ein Spiel, wo die Bewertungsfunktionen $u_i$ Kostenfunktionen sind) kann in ein Nutzenspiel umgewandelt werden (ebenso umgekehrt), in dem man die Kosten- bzw. Nutzenfunktion mit $-1$ multipliziert.
+	
+	Außerdem wird angenommen, dass die Werte der Bewertungsfunktion stets nicht-negativ sind.
+\end{theo}
+
+\subsubsection{Nash Gleichgewichte}
+
+\begin{defi}{Reines Nash Gleichgewicht}
+	Ein Profil $x = (x_1, \dots, x_n)$ ist ein reines Nash Gleichgewicht, wenn kein Spieler ein Anreiz hat, seine Strategie zu wechseln, unter der Annahme, dass die übrigen Spieler bei ihren aktuelle Strategien bleiben. Mathematisch ausgedrückt
+	
+	Ein Profil $x = (x_1, \dots, x_n)$ ist ein reines Nash Gleichgewicht, wenn für jeden Spieler $i \in N$ gilt:
+	
+	\begin{center}
+		$u_i(x) \leq u_i(x'_i$ $, x_{-i})$ für alle $x'_i \in X_i$
+	\end{center}
+	
+	$x_{-i}$ bezeichnet das Profil $x$, aus der die Strategie von Spieler $i$ ``gestrichen'' wurde (deswegen das $-i$). $(x'_i, x_{-i})$ ist dann das Profil, aus dem die alte Strategie $x_i$ von Spieler $i$ gestrichen wurde und eine andere $x'_i$ hinzugefügt wurde. 
+	
+	Das Profil $x$ ist also dann ein Nash Gleichgewicht, wenn für jeden Spieler $i$ die Bewertungsfunktion im Profil $x$ besser oder gleich gut ist, als wenn Spieler $i$ eine alternative Strategie wählen würde.
+\end{defi}
+
+\begin{theo}{Reines Nash Gleichgewicht in Strategischen Spielen}
+	Nicht jedes Strategische Spiel hat ein reines Nash Gleichgewicht
+\end{theo}
+
+\subsubsection{Routing-Spiele}
+
+\begin{defi}{Routing-Spiele}
+	Routing-Spiele sind eine Spezialklasse von strategischen Spielen. Sie bestehen aus:
+	
+	\begin{itemize}
+		\item Netzwerk $G = (V,E)$
+		\item Startknoten $s_i$ und Endknoten $t_i$ für jeden Spieler $i \in N = \{1, \dots, n\}$
+		\item Kostenfunktion $c_e$ für jede Kante $e \in E$, die jeder natürlichen Zahl $x$ einen Wert $c_e(x)$ zuweist
+	\end{itemize}
+
+Jeder Spieler $i$ wählt als Strategie einen der möglichen $s_i$ - $t_i$-Pfade im Graphen $G$. Das Profil $P = (P_1, \dots, P_n)$ besteht dann aus den jeweiligen Pfaden $P_i$, den jeder Spieler $i$ gewählt hat.
+\end{defi}
+
+
 
 \section{Networkflow und Project Selection}
 
