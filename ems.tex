@@ -1272,7 +1272,7 @@ Der folgende Abschnitt behandelt das Key-Lemma, welches für den Beweis der Korr
 	
 	Annahmen:
 	\begin{itemize}
-		\item Es gibt für zwei Objekte $u$ und $v$ einen Distanzwert $d(u,v)$, der die Ähnlichkeit bzw. Unterschiedlichkeit zwischen $u$ und $v$ beschreibt
+		\item Es gibt für zwei Objekte $u$ und $v$ einen Distanzwert $d(u,v)$, der die Ähnlichkeit bzw. Unterschied-lichkeit zwischen $u$ und $v$ beschreibt
 		\item Das Distanzmaß ist symmetrisch, d.h. $d(u,v) = d(v,u)$ für alle Objektpaare $\{u,v\}$
 		\item Die Objekte sollen in $k$ Cluster eingeteilt werden
 	\end{itemize}
@@ -1388,13 +1388,14 @@ Alles klar? Dann können wir ja weitermachen.
 \subsubsection{Nash Gleichgewichte}
 
 \begin{defi}{Reines Nash Gleichgewicht}
-	Ein Profil $x = (x_1, \dots, x_n)$ ist ein reines Nash Gleichgewicht, wenn kein Spieler ein Anreiz hat, seine Strategie zu wechseln, unter der Annahme, dass die übrigen Spieler bei ihren aktuelle Strategien bleiben. Mathematisch ausgedrückt
+	Ein Profil $x = (x_1, \dots, x_n)$ ist ein reines Nash Gleichgewicht, wenn kein Spieler ein Anreiz hat, seine Strategie zu wechseln, unter der Annahme, dass die übrigen Spieler bei ihren aktuelle Strategien bleiben. Mathematisch ausgedrückt:
 	
-	Ein Profil $x = (x_1, \dots, x_n)$ ist ein reines Nash Gleichgewicht, wenn für jeden Spieler $i \in N$ gilt:
-	
-	\begin{center}
-		$u_i(x) \leq u_i(x'_i$ $, x_{-i})$ für alle $x'_i \in X_i$
-	\end{center}
+	Ein Profil $x = (x_1, \dots, x_n)$ ist ein reines Nash Gleichgewicht für ein \emph{Kostenspiel}, wenn für jeden Spieler $i \in N$ gilt:
+
+
+		\[ u_i(x) \leq u_i(x'_i \text{ }, x_{-i}) \text{ für alle } x'_i \in X_i \] 
+
+\textit{Bei Nutzenspielen wird das Ungleich-Zeichen entsprechend zu $\geq$.}
 	
 	$x_{-i}$ bezeichnet das Profil $x$, aus der die Strategie von Spieler $i$ ``gestrichen'' wurde (deswegen das $-i$). $(x'_i, x_{-i})$ ist dann das Profil, aus dem die alte Strategie $x_i$ von Spieler $i$ gestrichen wurde und eine andere $x'_i$ hinzugefügt wurde. 
 	
@@ -1417,9 +1418,99 @@ Alles klar? Dann können wir ja weitermachen.
 	\end{itemize}
 
 Jeder Spieler $i$ wählt als Strategie einen der möglichen $s_i$ - $t_i$-Pfade im Graphen $G$. Das Profil $P = (P_1, \dots, P_n)$ besteht dann aus den jeweiligen Pfaden $P_i$, den jeder Spieler $i$ gewählt hat.
+
+Weiter wird mit $I_e(P)$ die ``Last'', die auf Kante $e$ liegt, bezeichnet und ist die Anzahl aller Spieler $i$, die die Kante $e$ in ihrem Pfad $P_i$ haben.
 \end{defi}
 
+\begin{halfboxl}
+	\boxspace
+\begin{theo}{Beispiel von Pigou}
+	Das nebenstehende Beispiel, benannt nach Pigou, zeigt, dass eigennütziges Verhalten von Spielern zu einer schlechteren Situation für alle führen kann:
+	
+	\begin{itemize}
+		\item 1000 Spieler wollen von $s$ nach $t$ reisen
+		\item Die grüne obere Route dauert für jeden Spieler, unabhängig von der Anzahl der Spieler, stets 1001 Zeiteinheiten
+		\item Die Reisezeit auf der unteren Route wächst linear mit der Anzahl der Spieler, die diese Route nehmen. Jeder Spieler benötigt also $x$ Zeiteinheiten.
+		\item Da jeder Spieler eigensinnig denkt, nimmt jeder den roten Pfad, da die Zeit $x = 1$ niedriger ist als 1001 (Ein einzelner Spieler weiß ja nicht, welchen Weg die anderen wählen, darum nimmt er an, er ist der einzige, der den roten Pfad nimmt).
+	\end{itemize}
+\end{theo}
+\end{halfboxl}%
+\begin{halfboxr}
+	\boxspace
+	Graphbeispiel Pigou:
+	
+	\begin{tikzpicture}
+	\node[draw,circle,minimum size=5mm, label = left:{$n = 1000$}] (s) at (0,0) {$s$};
+	
+	\node[draw,circle,minimum size=5mm] (t) at (4,0) {$t$};
 
+	\draw[->,thick,black!20!red] (s.315) to[bend right] (t.225) node[below right]{$c(x) = x$};
+	\draw[->,thick,black!30!green] (s.45) to[bend left] (t.135) node[above right]{$c(x) = 1001$};
+	\end{tikzpicture}
+	
+	\begin{defi}{Soziales Optimum und Soziale Kosten}
+		Das soziale Optimum eines Routingspiels ist das Profil, wo die Kosten aller Spieler aufsummiert minimal sind. Allgemein nennt man die Summe der Kosten aller Spieler auch \emph{Soziale Kosten}
+	\end{defi}
+
+	\begin{defi}{Price of Anarchy}
+		Der \emph{Price of Anarchy (PoA)}  (etwa: Preis der Eigensinnigkeit) ist das Verhältnis von den maximalen Sozialen Kosten eines Nash-Gleichgewichts zu dem optimalen sozialen Kosten.
+	\end{defi}
+\end{halfboxr}
+
+In dem Graphbeispiel sieht man folgendes:
+
+\begin{itemize}
+	\item Alle Spieler wählen die untere Route, und jeder Spieler hat Kosten von 1000 Zeiteinheiten. Die Sozialen Kosten betragen $1000 \cdot 1000 = 1.000.000$
+	\item Das Soziale Optimum hingegen ist, wenn sich die Spieler gleichmäßig auf beide Routen aufteilen. Dann wären die sozialen Kosten $500 \cdot 1001 + 500 \cdot 500 = 750.500$
+	\item Der PoA ist hier also $\frac{1.000.000}{750.500} \approx 1, 33245$
+\end{itemize}
+
+\begin{theo}{PoA in Routing Spielen}
+	Der PoA in Routing Spielen, wo die Kostenfunktion jeder Kante $e$ linear ist, also von der Form $c_e(x) = a_e(x) + b_e$, ist niemals größer als $\frac{4}{3}$.
+\end{theo}
+
+\todo[inline]{Braess' Parodoxon}
+
+\begin{theo}{Gleichgewicht in Routing-Spielen}
+	Das hier betrachtete Modell von Routing-Spielen geht auf Rosenthals ``Congestion Games'' zurück und wird daher auch das \emph{Rosenthal-Modell} genannt.
+	
+	Routing-Spiele im Rosenthal-Modell besitzen stets ein Gleichgewicht.
+\end{theo}
+
+\subsubsection{Potenzialfunktion für Routingspiele}
+
+Die folgende Potenzialfunktion $\phi$ wird für den Beweis des vorangegangen Satzes verwendet. Der Beweis wird hier jedoch weggelassen.
+
+\begin{defi}{Potenzialfunktion}
+	Die folgende Potenzialfunktion $\Phi $ weist jedem Profil $P = (P_1, \dots , P_n)$ einen Wert $\Phi (P)$ zu:
+	
+	\[\Phi (P) = \sum_{e \in E} \sum_{t = 0 }^{l_e(P)} c_e(t) \]
+\end{defi}
+
+\todo[inline]{Potenzialfunktion erklären, eventuell Beweis für Gleichgewichte mit reinbringen?}
+
+\subsection{Kooperative Spiele}
+Im folgenden wird davon ausgegangen, dass die Spieler nicht eigennützig denken, sondern grundsätzlich bereit zur Kooperation sind, solange es ihnen einen Vorteil verschafft.
+
+\begin{defi}{Modell kooperativer Spiele}
+	\begin{itemize} 
+	\item Es gibt eine endliche Menge $N = \{1, \dots , n\}$ an Spielern
+	\item Zu jeder Teilmenge (\emph{Koalition}) $S$ der Spielermenge $N$ gibt es einen Wert $v(s)$
+	\end{itemize}
+
+	Je nach Kontext gilt für den Wert $v(S)$:
+	
+	\begin{itemize}
+		\item Kooperatives Kostenspiel: der Wert $v(S)$ beschreibt die Kosten, die allein durch die Spieler der Menge $S$ verursacht werden
+		\item Kooperatives Nutzenspiel: der Wert $v(S)$ beschreibt den Gewinn, der allein durch die Spieler der Menge $S$ erwirtschaftet werden kann
+	\end{itemize}
+\end{defi}
+
+\subsubsection{Facility Location Game}
+
+\begin{defi}{Facility Location Game}
+	Inhalt...
+\end{defi}
 
 \section{Networkflow und Project Selection}
 
