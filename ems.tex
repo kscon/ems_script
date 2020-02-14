@@ -9,6 +9,8 @@
 \newcommand\tab[1][1cm]{\hspace*{#1}}
 \newcommand{\boxspace}{	\vspace{-\baselineskip}	}
 
+\setcounter{section}{-1}
+
 \begin{document}
 
 \maketitle
@@ -18,13 +20,21 @@
 \section{Einleitung}
 Dieser Panikzettel für das Fach ``Einführung in Management Science: Desgin und Analyse von Algorithmen'', gehalten im WS19/20 von Prof. Peis, ist ein freiwilliges Projekt, dass ich parallel zu meiner Tutortätigkeit in diesem Fach erstellt habe. Die Struktur folgt dabei in der Reihenfolge den Vorlesungsthemen, kann jedoch an sinnvollen Stellen davon abweichen.
 
-Dieses Dokument hat \emph{nicht} zum Ziel, alleinige Ressource zum Lernen und Verstehen des Vorlesungsstoffes zu sein, sondern eine begleitende bzw. ergänzende Rolle zu den Materialien aus der Vorlesung und Übung einzunehmen. Trotz größter Sorgfalt können Fehler, die Inhalt, Form, Notation, etc. betreffen, nicht ausgeschlossen werden. Es liegt daher in der Verantwortung des/der Leser/Leserin, sich im Zweifel mit den betreffenden Lehrmaterialien der Vorlesung auseinanderzusetzen. Außerdem hafte ich nicht für falsche Antworten in z.B. der Klausur, aufgrund der Informationen in diesem Dokument getätigt wurden. 
+Dieses Dokument hat \emph{nicht} zum Ziel, alleinige Ressource zum Lernen und Verstehen des Vorlesungsstoffes zu sein, sondern eher  begleitende bzw. ergänzende Rolle als ``Quick-Reference'' zu den Materialien aus der Vorlesung und Übung einzunehmen. Trotz größter Sorgfalt können Fehler, die Inhalt, Form, Notation, etc. betreffen, nicht ausgeschlossen werden. Es liegt daher in der Verantwortung des/der Leser/Leserin, sich im Zweifel mit den betreffenden Lehrmaterialien der Vorlesung auseinanderzusetzen. Außerdem hafte ich nicht für falsche Antworten in z.B. der Klausur, aufgrund der Informationen in diesem Dokument getätigt wurden.
+
+\subsection{Versionshinweis}
+Das Dokument ist noch im Aufbau und wird sich unter Umständen noch ein wenig verändern.Lob, Kritik und Änderungsvorschlägen sind ausdrücklich erwünscht und erreichen mich am besten durch eine Email an \href{mailto:kevin.conrads@rwth-aachen.de}{kevin.conrads@rwth-aachen.de}. 
+
+\paragraph{Changelog}
+
+\begin{itemize}
+	\item 14.02.2020 - Version 1: Kapitel 1 - 9 der Vorlesung eingepflegt
+\end{itemize}
 
 Eltern haften für ihre Kinder.
 
 \todo[inline]{Hinweis auf Mathelight, Notationshilfen, Übungsmaterialen, etc.}
 
-\vspace{-0.5\baselineskip}
 {\small{}
 	\paragraph{Hinweis:}
 	Das Latex-Template für diesen Panikzettel sowie das Konzept ``Panikzettel'' an sich sind übernommen bzw. angelehnt an das \href{https://git.rwth-aachen.de/philipp.schroer/panikzettel}{Panikzettel-Projekt}.
@@ -1465,17 +1475,23 @@ In dem Graphbeispiel sieht man folgendes:
 	\item Der PoA ist hier also $\frac{1.000.000}{750.500} \approx 1, 33245$
 \end{itemize}
 
+\begin{halfboxl}
+	\boxspace
 \begin{theo}{PoA in Routing Spielen}
 	Der PoA in Routing Spielen, wo die Kostenfunktion jeder Kante $e$ linear ist, also von der Form $c_e(x) = a_e(x) + b_e$, ist niemals größer als $\frac{4}{3}$.
-\end{theo}
-
-\todo[inline]{Braess' Parodoxon}
-
-\begin{theo}{Gleichgewicht in Routing-Spielen}
-	Das hier betrachtete Modell von Routing-Spielen geht auf Rosenthals ``Congestion Games'' zurück und wird daher auch das \emph{Rosenthal-Modell} genannt.
 	
-	Routing-Spiele im Rosenthal-Modell besitzen stets ein Gleichgewicht.
+	Das obige Beispiel ist ein extremer Fall und ziemlich nah an $\frac{4}{3}$, aber dennoch kleiner.
 \end{theo}
+\end{halfboxl}%
+\begin{halfboxr}
+	\boxspace
+	\begin{theo}{Gleichgewicht in Routing-Spielen}
+		Das hier betrachtete Modell von Routing-Spielen geht auf Rosenthals ``Congestion Games'' zurück und wird daher auch das \emph{Rosenthal-Modell} genannt.
+		
+		Routing-Spiele im Rosenthal-Modell besitzen stets ein Gleichgewicht.
+	\end{theo}
+\end{halfboxr}
+\todo[inline]{Braess' Parodoxon}
 
 \subsubsection{Potenzialfunktion für Routingspiele}
 
@@ -1509,13 +1525,96 @@ Im folgenden wird davon ausgegangen, dass die Spieler nicht eigennützig denken,
 \subsubsection{Facility Location Game}
 
 \begin{defi}{Facility Location Game}
-	Inhalt...
+	Das Facility Location Game (FLG) ist ein kooperatives Kostenspiel
+	
+	\begin{itemize}
+		\item $n$ Kunden $N = \{1, \dots, n\}$ mächten an offene Einrichtungen (Facilites) angebunden werden
+		\item Es gibt eine Menge $\mathfrak{F}$ an möglichen Standorten, an denen eine Einrichtung eröffnet werden kann
+		\item Die Kosten für die Eröffnung der Einrichtung $j$ betragen $f_j$ Geldeinheiten
+		\item Die Kosten um Kunde $i$ an Einrichtung $j$ anzubinden betragen $c_{i,j}$ Geldeinheiten
+		\item Für jede Teilmenge $S$ der Spielermenge $N$ bezeichnet $v(S)$ die minimale Summe aus Eröffnungs- und Anbindungskosten, wenn alle Spieler der Koalition $S$ an offene Einrichtungen angebunden werden.
+	\end{itemize} 
+
+	Die Frage, die dann aufkommt, ist: Wie sollen die Gesamtkosten $v(N)$, also die Kosten, wenn alle Spieler angebunden werden sollen, auf faire Weise aufgeteilt werden?
 \end{defi}
+
+\todo[inline]{Graphbeispiel für Facility Location}
+\subsubsection{Der Core von Kooperativen Spielen}
+
+Um die vorstehende Frage zu beantworten, betrachten wir das Konzept des \emph{Core}. Teile die Gesammtkosten [bzw. Gesamtgewinn] $v(N)$ so unter den Spielern in $N$ auf, dass keine Koalition $S$ den Anreiz hat, sich von der großen Koalition $N$ abzuspalten. Wir beschreiben die Aufteilung der Kosten als Vektor $x$ mit $n$ Einträgen, wo der $i$-te Eintrag den Anteil beschreibt, den Spieler $i$ zahlen muss [bzw. erhält], und für den gilt:
+
+\begin{itemize}
+	\item Summiert man die Einträge aller Spieler auf, so ergibt sich der Wert $v(N)$ und
+	\item Summiert man die Einträger aller Spieler einer Koalition $S$ auf, so ergibt sich ein Wert $x(S)$, der nicht größer [bzw. nicht kleiner] ist als $v(S)$ (sonst hätte die Koalition einen Anreiz, ``ihr eigenes Ding'' zu machen)
+\end{itemize}	
+
+\begin{defi}{Core}
+	Core eines kooperativen \textbf{\color{red} Kostenspiels $(N,v)$}:
+	
+	\[ \textit{Core}(N,v) = \{x \in \mathbb{R}_+^n | \sum_{i \in N} x_i = v(N) \land \sum_{i \in S} x_i \color{red} \leq \color{black} v(S) \forall S \subseteq N \} \]
+	
+	Core eines kooperativen \textbf{\color{black!40!green} Nutzenspiels $(N,v)$}:
+	
+	\[ \textit{Core}(N,v) = \{x \in \mathbb{R}_+^n | \sum_{i \in N} x_i = v(N) \land \sum_{i \in S} x_i \color{black!40!green} \geq \color{black} v(S) \forall S \subseteq N \} \]
+	
+\end{defi}
+
+\subsubsection{Owen's Lineares Produktionsspiel - Beschreibung}
+
+\begin{defi}{Owen's Lineares Produktionsspiels (OLP)}
+	\begin{itemize}
+		\item $n$ Firmen $N = \{1, \dots, n \}$ ziehen in Erwägung zu kooperieren um durch Zusammenfügen ihrer Ressourcen insgesamt höhere Gewinne zu erzielen
+		\item Es gibt $k$ verschiedene Artikeltypen, die produziert werden können
+		\item Es gibt $m$ verschiedene Typen an Ressourcen, die zur Produktion benötigt werden
+		\item Zur Produktion einer Einheit von Artikel $j$ werden $a_{r,j}$ Einheiten der Ressource $r$ benötigt.
+		\item Firma $i$ verfügt über $b_{i,r}$ Einheiten der Ressource $r$.
+		\item Eine Einheit von Artikel $j$ erzeugt einen Gewinn von $c_j$ Geldeinheiten
+		\item Für jede Koalition $S$ der Firmenmenge $N$ kann mittels des folgenden linearen Programms der Zielfunktionswert $v(S)$ eines optimalen (fraktionalen) Produktionsplans bestimmt werden.
+	\end{itemize}
+\end{defi}
+
+\begin{defi}{OLP: LP zur Bestimmung des Produktionsplans}
+	\begin{alignat*}{4}
+		\max \quad & \sum_{j=1}^{k} c_j x_j \\
+		\text{s.t.} \quad & \sum_{j=1}^{k} a_{rj} x_j& ~\leq~ & \sum_{i \in S} b_{ir} & \forall r \in \{1, \dots, m\}  \\
+		& & x  ~\geq~ & 0 & \forall j \in \{1, \dots, k\}
+	\end{alignat*}
+\end{defi}
+
+Auch hier stellt sich die Frage, wie der Gewinn fair auf die einzelnen Firmen aufgeteilt werden kann. Dazu betrachten wir das \emph{duale LP} zum obigen LP:
+
+\begin{defi}{Berechnung eines Core-Vektors in OLP}
+	Ein Core-Vektor für OLP kann wie folgt berechnet werden. Sei $b_r(S) = \sum_{i \in S} b_{i,r}$ für Rohstoff $r$ und Koalition $S \subseteq N$.
+	
+	\begin{enumerate}
+		\item Betrachte die LPs
+		
+		\[P(S) :  v(S) = \max_{x \geq 0}\{\sum_{j=1}^{k} c_j x_j \, | \, \sum_{j=1}^{k} a_{rj} x_j \leq b_r(S) \quad \forall r = 1, \dots m \} \]
+		
+		und zugehörigen dualen LPs:
+		
+		\[D(S) :  w(S) = \min_{y \geq 0}\{\sum_{r=1}^{m} b_r(S) y_r \, | \, \sum_{r=1}^{m} a_{rj} y_r \leq c_j \quad \forall j = 1, \dots ,k \} \]
+		
+		und nehme die optimale Lösung $(y_1^*, \dots , y_m^*)$ für das LP $D(N)$.
+		
+		\hspace{0.1cm}
+		\item Gebe jedem Spieler $z_i^* = \sum_{r=1}^{m} b_{ir} y_r^*$.
+	\end{enumerate}
+	
+	Dieser Vektor $z^*$ liegt im Core.
+\end{defi}
+
 
 \section{Networkflow und Project Selection}
 
+... \textit{folgt zeitnah} ...
+
 \section{Matching Markets}
 
+... \textit{folgt zeitnah} ...
+
 \section{Komplexitätstheorie}
+
+... \textit{folgt irgendwann} ...
 
 \end{document}
