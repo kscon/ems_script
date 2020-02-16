@@ -5,6 +5,13 @@ Das Dokument ist noch im Aufbau und wird sich unter Umständen noch ein wenig ve
 **Changelog:** 
 
 - 14.02.2020 - Version 1: Kapitel 1 - 8 der Vorlesung eingepflegt
+- 16.02.2020 - Version 1.1:
+  - Allgemein: Layout angepasst, neue Seite für neue Section 
+  - Abschnitt 1.1: Studydrive Gruß hinzugefügt, Hinweis angepasst.
+  - 3.2: Bubble Sort Schriftart angepasst und fixed Typo
+  - 5.3.2: Algo EFTF Lesbarkeit erhöht
+  - 6.1.1: Def induzierter Teilgraph: Lesbarkeit erhöht
+  - 7.4.1: Fixed Typo in Spacing Definition
 
 
 

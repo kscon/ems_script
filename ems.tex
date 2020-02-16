@@ -17,6 +17,7 @@
 
 \tableofcontents
 
+\newpage
 \section{Einleitung}
 Dieser Panikzettel für das Fach ``Einführung in Management Science: Desgin und Analyse von Algorithmen'', gehalten im WS19/20 von Prof. Peis, ist ein freiwilliges Projekt, dass ich parallel zu meiner Tutortätigkeit in diesem Fach erstellt habe. Die Struktur folgt dabei in der Reihenfolge den Vorlesungsthemen, kann jedoch an sinnvollen Stellen davon abweichen.
 
@@ -27,22 +28,26 @@ Es sei außerdem auf das ``Mathe-light'' und ``Pseudocode light'' im Moodle Lern
 \subsection{Versionshinweis}
 Das Dokument ist noch im Aufbau und wird sich unter Umständen noch ein wenig verändern. Lob, Kritik und Änderungsvorschlägen sind ausdrücklich erwünscht und erreichen mich am besten durch eine Email an \href{mailto:kevin.conrads@rwth-aachen.de}{kevin.conrads@rwth-aachen.de}. Es sind weitere Beispiele zu den vielen Definitionen geplant, falls jedoch auch Anwenden von Algorithmen bzw. Vorrechnen von Aufgaben gewünscht ist, bitte ebenso eine Email an mich schreiben.
 
-Eine neue Version wird zum einen im Moodle-Lernraum veröffentlicht, kann aber auch \href{https://git.rwth-aachen.de/kevin.conrads/ems-script/raw/master/ems.pdf?inline=false}{hier} heruntergeladen werden. Es empfiehlt sich ein regelmäßiger Check nach einer neuen Version.
+Eine neue Version wird zum einen im Moodle-Lernraum veröffentlicht, kann aber auch \href{https://git.rwth-aachen.de/kevin.conrads/ems-script/raw/master/ems.pdf?inline=false}{hier} heruntergeladen werden. Es empfiehlt sich ein regelmäßiger Check nach einer neuen Version (hiermit seien auch die ``Studydrivler'' gegrüßt ;) ).
 
 \paragraph{Changelog}
 \begin{itemize}
 	\item 14.02.2020 - Version 1: Kapitel 1 - 8 der Vorlesung eingepflegt
+	\item 16.02.2020 - Version 1.1: Kleinere Fehlerverbesserungen und Layout angepasst
 \end{itemize}
 
 \todo[inline]{Hinweis auf Mathelight, Notationshilfen, Übungsmaterialen, etc.}
 
 {\footnotesize{}
 	\paragraph{Hinweis:}
-	Das ``Aussehen'' dieses Dokumentes (z.B. die farbigen Boxen) für diesen Panikzettel sowie das Konzept ``Panikzettel'' an sich sind übernommen bzw. angelehnt an das \href{https://git.rwth-aachen.de/philipp.schroer/panikzettel}{Panikzettel-Projekt}. Dort (und auf der Website \url{https://panikzettel.philworld.de/} ) finden sich zwar hauptsächlich Panikzettel für Informatikveranstaltungen, aber es lohnt sich, sich mal durch die PDFs dort zu klicken (z.B. für Entscheidungslehre ;) ). Die Leute hinter dem Projekt freuen sich immer über eine Email als Dank für ihre Arbeit.}
+	Das ``Aussehen'' dieses Dokumentes (z.B. die farbigen Boxen) für diesen Panikzettel sowie das Konzept ``Panikzettel'' an sich sind übernommen bzw. angelehnt an das \href{https://git.rwth-aachen.de/philipp.schroer/panikzettel}{Panikzettel-Projekt}. Dort (und auf der Website \url{https://panikzettel.philworld.de/} ) finden sich zwar hauptsächlich Panikzettel für Informatikveranstaltungen, aber auch für manche BWL-Fächer z.B. für Entscheidungslehre. Es lohnt sich also, mal durch die PDFs zu klicken. Außerdem freuen sich die Leute hinter dem Projekt immer über eine Email als Dank für ihre Arbeit.}
 
 So, jetzt gehts aber los. Alles anschnallen, jeder nur ein Kreuz, Eltern haften für ihre Kinder.
 
+\newpage
 \section{Stabile Matchings}
+
+Dieses erste Kapitel der Veranstaltung setzt einige Kenntnisse der Graphentheorie voraus. Wer eine Auffrischung gebrauchen kann, dem sei das Mathe-Light im Moodle oder das Kapitel \ref{graphtheorie} als Einstieg empfohlen.
 
 \subsection{Das Stable Marriage Problem}
 
@@ -407,6 +412,7 @@ Unter Umständen kann es mehrere stabile Matchings in einem Graphen geben, daher
 	\end{center}
 \end{halfboxr}
 
+\newpage
 \section{Sortieren}
 
 Grundsätzlich in diesem Kapitel, sowie in allen folgenden, beginnen Arrays bzw. Listen immer mit dem Index 0. Das heißt, in einem Array $A$ mit z.B. 3 Elementen, gibt es die Position $A[0]$, $A[1]$ und $A[2]$. Das erste Element eines $n$-elementigen Arrays $A$ ist also $A[0]$ und das letzte $A[n-1]$.
@@ -452,7 +458,7 @@ Insertion Sort ist ein Sortierverfahren, dass jedes Element eines Arrays an die 
 		
 		\tab \textbf{RETURN} $A$
 		
-		Sortiere $A[1 \dots \frac{n}{2}]$ und $A[\frac{n}{2} +1 \dots n]$ rekursiv
+		Sortiere $A[1 \dots \frac{n}{2}]$ und $A[\frac{n}{2} +1 \dots n]$ rekursiv, wende also Merge Sort auf $A[1 \dots \frac{n}{2}]$ und auf $A[\frac{n}{2} +1 \dots n]$ an. 
 		
 		Merge die beiden sortierten Teilarrays
 		
@@ -495,24 +501,22 @@ Insertion Sort ist ein Sortierverfahren, dass jedes Element eines Arrays an die 
 		\textbf{Ausgabe:} Aufsteigend sortiertes Array $A$
 		\tcblower
 		
-		\textbf{FOR} i = n \textbf{DOWN}\footnotemark \textbf{ TO} 2
+		\textbf{FOR} $i = n$ \textbf{DOWN}\footnotemark \textbf{ TO} $2$
 		
-		\tab \textbf{FOR} j = 0 \textbf{TO} i-1
+		\tab \textbf{FOR} $j = 0$ \textbf{TO} $i-1$
 		
-		\tab\tab \textbf{IF} (A[j] $>$ A[j+1])
+		\tab\tab \textbf{IF} ($A[j] > A[j+1]$)
 		
-		\tab\tab\tab Tausche A[j] und A[j+1]
+		\tab\tab\tab Tausche $A[j]$ und $A[j+1]$
 		
-		\textbf{RETURN} A
+		\textbf{RETURN} $A$
 	\end{algo}
 \end{halfboxr}
-
-\todo[inline]{ Algorithmenboxen schöner machen }
 
 \footnotetext{Das \textbf{DOWN TO} entscheidet sich von den bisherigen \textbf{FOR \dots TO} nur dadurch, dass wir die Variable anstatt hochzuzählen, bei einem \textbf{DOWN TO} nach jeder Iteration der Schleife um eins runterzählen.} 
 
 
-
+\newpage
 \section{Laufzeit}
 
 \subsection{Laufzeitanalyse}
@@ -607,7 +611,7 @@ Laufzeit einiger Algorithmen:
 \end{itemize}
 
 
-
+\newpage
 \section{Interval-Scheduling und Partitioning}
 
 \subsection{Greedy Algorithmen}
@@ -702,7 +706,7 @@ Der Earliest-Finish-Time-First Algorithmus, der der Auswahlregel $(R4)$ von oben
 	
 	\textbf{FOR} ( $j = 1$ \textbf{TO} $n$)
 	
-	\tab \textbf{IF} ($j$ ist kompatible mit $A$)
+	\tab \textbf{IF} (\, $j$ ist kompatibel mit $A$)
 	
 	\textbf{RETURN} $A$
 \end{algo}
@@ -839,7 +843,8 @@ Wir haben erneut Auswahlregeln, aber da wir nun keine festen Startzeitpunke habe
 	\textbf{RETURN} den resultierenden Schedule $S$
 \end{algo}
 
-\section{Graphentheorie}
+\newpage
+\section{Graphentheorie} \label{graphtheorie}
 
 \subsection{Der langweilige Teil - Definitionen}
 
@@ -907,9 +912,9 @@ Es folgen ein paar langweilige Definitionen.
 \begin{thirdboxr}
 	\vspace{-\baselineskip}	
 	\begin{defi}{induzierter Teilgraph}
-		Ein Teilgraph eines Graphe $G = (V,E)$ ist ein Graph $G' = (V',E')$ mit $V'$ ist eine Teilmenge von $V$ und $E'$ ist eine Teilmenge von $E$. 
+		Ein \emph{Teilgraph} eines Graphe $G = (V,E)$ ist ein Graph $G' = (V',E')$ mit $V'$ ist eine Teilmenge von $V$ und $E'$ ist eine Teilmenge von $E$. 
 		
-		Der Teilgraph $G' = (V',E')$ heißt induzierter Teilgraph, wenn $E'$ alle Kanten aus $E$ enthält, deren beide Endpunkte in $V'$ sind.
+		Der Teilgraph $G' = (V',E')$ heißt \emph{induzierter Teilgraph}, wenn $E'$ alle Kanten aus $E$ enthält, deren beide Endpunkte in $V'$ sind.
 	\end{defi}
 	
 	\begin{defi}{Schlaufe}
@@ -1130,6 +1135,7 @@ Es bietet sich an, die Zwischenschritte von Dijkstra in einer geeigneten Tabelle
 	Zu jeder Zeit während des Algorithmus gilt, für einen Knoten $u \in S$, dass der Wert $d(u)$ der Länge eines kürzesten $s-u$-Weges entspricht.	
 \end{theo}
 
+\newpage
 \section{Minimale Spannbäume}
 
 \subsection{Problemdefinition}
@@ -1304,7 +1310,7 @@ Um ein Merkmal der ``Qualität'' einer Aufteilung von Objekten in $k$ Cluster (`
 \begin{defi}{Spacing}
 	Sei $\mathcal{C} = C_1 \cup \dots \cup C_k$ ein Clustering der Objekte aus $U$ in $k$ paarweise disjunkte Cluster. $C$ wird dann auch ein $k$-Clustering der Menge $U$ genannt.
 	
-	Als \emph{spacing} (oder ``Qualität'') eines Clustering $\mathcal{C} = C_1 \cup \dots \cup C_k$ wird die minimale Distanz zweier Obkekte aus unterschiedlichen Clustern bezeichnet, d.h.,
+	Als \emph{spacing} (oder ``Qualität'') eines Clustering $\mathcal{C} = C_1 \cup \dots \cup C_k$ wird die minimale Distanz zweier Objekte aus unterschiedlichen Clustern bezeichnet, d.h.,
 	
 	\centering spacing $(\mathcal{C}) = \min \{d(u,v) | u \in C_i, v \in C_j,$ für $i \neq j \}$
 \end{defi}
@@ -1352,6 +1358,7 @@ Um ein Merkmal der ``Qualität'' einer Aufteilung von Objekten in $k$ Cluster (`
 	\end{theo}
 \end{halfboxr}
 
+\newpage
 \section{Einführung in Spieltheorie}
 
 \subsection{Spieltheorie?}
