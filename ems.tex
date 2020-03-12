@@ -134,7 +134,7 @@ Dieses erste Kapitel der Veranstaltung setzt einige Kenntnisse der Graphentheori
 
 Hier sollte deutlich werden, dass das Stable Marriage Problem äquivalent zum Stable Matching Problem in bipartiten Graphen ist.
 
-Das ``Reduzieren'' von Problem aus der Realität auf Probleme z.B. der Graphentheorie ist eine weit verbreitete Technik. Man folgt der Idee: Wenn man einen Algorithmus A hat, der ein (abstraktes) (Graphen-)Problem X löst, und ein reales Problem Y auf das Problem X reduzierbar (oder äquivalent) ist, dann kann man auch Problem Y mit dem Algorithmus A lösen.
+\paragraph{Reduktion}\label{reduction} Das ``Reduzieren'' von Problem aus der Realität auf Probleme z.B. der Graphentheorie ist eine weit verbreitete Technik. Man folgt der Idee: Wenn man einen Algorithmus A hat, der ein (abstraktes) (Graphen-)Problem X löst, und ein reales Problem Y auf das Problem X reduzierbar (oder äquivalent) ist, dann kann man auch Problem Y mit dem Algorithmus A lösen.
 
 \subsection{Exkurs: Stable Roommate Problem}
 
@@ -1617,7 +1617,141 @@ Auch hier stellt sich die Frage, wie der Gewinn fair auf die einzelnen Firmen au
 
 \section{Networkflow und Project Selection}
 
-... \textit{folgt zeitnah} ...
+\subsection{Netzwerkflüsse}
+
+Netzwerkflüsse werden oft benutzt, wenn es darum geht, einen ``Fluss'' von Gütern, Fahrzeugen, Nachrichten usw. in einem ``Netzwerk'' bestehend aus z.B. Bahnhöfen, Häfen, Sendemasten, Straßen(-Kreuzungen) zu modellieren. Das folgende Kapitel über Project Selection baut auf diesem Konzept auf. Die Grundlagen für Maximale (Netzwerk-)Flüsse und den Zusammenhang mit dem minimalen Schnitt werden an dieser Stelle vorausgesetzt, können aber bei Bedarf z.B. in den Folien der Veranstaltung ``Quantitative Methoden'' oder auch in der Vorlesung zu Netzwerkflüssen in dieser Veranstaltung nachgeschlagen werden.
+
+Der wichtigste Satz sei hier jedoch noch einmal erwähnt:
+
+\begin{theo}{Max-Flow-Min-Cut}
+	Für einen Graphen $G = (V,E)$ mit Quelle $s$ und Senke $t$ und einem Fluss $f$, sowie $D_f$ der zugehörige Residualgraph von $G$, gilt:
+	
+	\tab Fluss $f$ hat maximalen Wert $\Leftrightarrow$ kein augmentierender Pfad im Residualgraphen $D_f$
+	
+	Darüber hinaus gilt:	\[\max \{val(f) | f \text{ist s-t-Fluss} \} = \min \{cap(S) | S \subseteq V \ \{t \}, s\in S \]
+		
+\end{theo}
+
+\subsection{Project Selection}
+
+\subsubsection{Project Selection Problemformulierung}
+
+\begin{defi}{Projekte mit Vorgängerbeziehungen}
+	\begin{itemize}
+		\item Menge $P$ Projekten, die potenziell bearbeitet werden können
+		\item Jedes Projekt $j$ ist ein Wert (Revenue) $w_j \in \mathbb{R} $ zugewiesen
+		\item $w_j < 0$ werden als Kosten und $ w_j \geq 0 $ als Gewinn des Projekts $j \in P$ interpretiert
+		\item \emph{Precedence constraints} vom Typ $ i \prec j$ zwischen Projekten $i,j$ meint, dass wenn $i \prec j$ gilt, dann kann Projekt $j$ nur dann ausgewählt werden, wenn auch Projekt $i$ ausgewählt wird. Projekt $i$ ist dann der \emph{Vorgänger (predecessor)} von $j$ genannt
+		\item Eine Projektauswahl $S \subseteq P$ ist \emph{zulässig}, wenn für jedes $j \in S$ auch alle Vorgänger von $j$ ebenfalls zu $S$ gehören
+	\end{itemize}
+\end{defi}
+
+Das Ziel im Project Selection (Max Weight Closure) Problem ist es nun, aus einer Menge $P$ an Projekten wie oben definiert eine zulässige Teilmenge $S \subseteq P$ zu wählen, sodass der Gewinn $\sum_{i \in S} w_i$ maximiert wird.
+
+\subsubsection{Precedence Graph und Hasse Diagramm}
+
+Wir machen uns nun die obige Definition zu nutze in dem wir das Project Selection Problem zu einem Graph Problem umwandeln (siehe auch \nameref{reduction}). Dafür brauchen wir zunächst den ``precedence graph (PG)'', der die Projekte aus $P$ als Knoten darstellt und genau dann eine gerichtete Kante $(j,i)$ von einem Knoten $j$ zu einem Knoten $i$ enthält, wenn $ i \prec j$ gilt.
+
+\textbf{Wichtig}: $i \prec j$ meint, dass Projekt $j$ nur dann ausgewählt werden kann, wenn auch $i$ ausgewählt wird. Im PG wird jedoch eine Kante $(j,i)$ dafür gezogen. Das heißt, dass die ausgehenden Kanten eines Knoten $j$ auf alle Projekte zeigen, die ausgewählt werden müssen, damit auch $j$ ausgewählt werden kann. Stehen zwei Projekte nicht in Relation durch $\prec$, so existiert auch keine Kante im PG zwischen diesen. 
+
+\begin{halfboxl}
+	\boxspace
+\begin{bsp}{Project Selection - Precedence Graph}
+	Sei $P' = \{a,b,c,d,e\}$ eine Projektmenge mit $a \prec b,\, a \prec c,\, a \prec d$ und $ d \prec c$. Der PG von $P'$ sieht dann wie folgt aus:
+	
+	\begin{center}
+		\begin{tikzpicture}
+		\node[draw,circle,minimum size=5mm] (a) at (1.5,0) {$a$};
+		\node[draw,circle,minimum size=5mm] (b) at (0,0) {$b$};
+		\node[draw,circle,minimum size=5mm] (c) at (0,-1.5) {$c$};
+		\node[draw,circle,minimum size=5mm] (d) at (1.5,-1.5) {$d$};
+		\node[draw,circle,minimum size=5mm] (e) at (-1.25,-0.75) {$e$};
+		
+		\draw[->] (b) -- (a) ;
+		\draw[->] (c) -- (a) ;
+		\draw[->] (c) -- (d) ;
+		\draw[->] (d) -- (a) ;
+		%\draw[->] (2) -- (1) ;
+		\end{tikzpicture}
+	\end{center}
+	
+\end{bsp}
+\end{halfboxl}%
+\begin{halfboxr}
+	\boxspace
+	\begin{bsp}{Project Selection - Hasse Diagramm}
+		Sei $P' = \{a,b,c,d,e\}$ eine Projektmenge mit $a \prec b,\, a \prec c,\, a \prec d$ und $ d \prec c$. Das HD von $P'$ sieht dann wie folgt aus:
+		
+		\begin{center}
+			\begin{tikzpicture}
+			\node[draw,circle,minimum size=5mm] (a) at (1.5,0) {$a$};
+			\node[draw,circle,minimum size=5mm] (b) at (0,0) {$b$};
+			\node[draw,circle,minimum size=5mm] (c) at (0,-1.5) {$c$};
+			\node[draw,circle,minimum size=5mm] (d) at (1.5,-1.5) {$d$};
+			\node[draw,circle,minimum size=5mm] (e) at (-1.25,-0.75) {$e$};
+			
+			\draw[->] (b) -- (a) ;
+			%\draw[->] (c) -- (a) ;
+			\draw[->] (c) -- (d) ;
+			\draw[->] (d) -- (a) ;
+			%\draw[->] (2) -- (1) ;
+			\end{tikzpicture}
+		\end{center}
+		
+	\end{bsp}
+	
+\end{halfboxr}
+
+Wie man in dem PG links sieht, hängt $c$ von $d$ und $a$ ab und $d$ von $a$. Wir können die Kante $(c,a)$ weglassen, weil die $\prec$-Relation transitiv ist: $c$ kann nur ausgewählt werden, wenn wir $a$ und $d$ auswählen, aber $d$ fordert auch die Wahl von $a$. Wenn also $d$ auswählen wollen, ist $a$ nach Definition auch auszuwählen. Dadurch können wir auch $c$ auswählen. Die Kantenfolge $(c,d), (d,a)$ drückt also implizit auch $(c,a)$ aus.
+
+Die Version des PGs auf der rechten, die man auch \emph{Hasse Diagram (HD)} nennt, spart uns die Kante $(c,a)$, da diese keinen Mehrwert an Information liefert. Ein HD ist also ein PG ohne transitive Kanten.
+
+\subsubsection{Min Cut Formulierung}
+
+Um nun eine Gewinn-maximierende Auswahl an Projekten zu finden, erweitern wir die Konstruktion des Hasse Diagramms um weitere Komponenten zu einem Flussnetzwerk. Dazu verwenden wir die \emph{min cut formulation}:
+
+\begin{defi}{Min Cut Formulation}
+	\begin{itemize}
+		\item Kapazität $\infty$ auf allen Kanten des \textbf{Hasse Diagramms}
+		\item Füge eine Quelle $s$ und eine Senke $t$ hinzu
+		\item Füge Kanten $(s,j)$ mit Kapazität $w_j$ für jedes Projekt $j$ aus $P^+ := \{j \in P | w_j \geq 0 \}$ - die Menge alle Projekte, die Gewinn bringen - hinzu.
+		\item Füge Kanten $(j,t)$ mit Kapazität $- w_j$ für jedes Projekt $j$ aus $P^- := \{j \in P | w_j \geq 0 \}$ - die Menge alle Projekte, die Verlust bringen - hinzu.
+		\item Zur Vereinfachung der Notation ist $w_s = w_t = 0$
+	\end{itemize}
+\end{defi} 
+
+Angewendet auf unser vorheriges Beispiel $P'$, wobei nun auch die Revenues definiert werden, ergibt sich also folgendes Flussnetzwerk:
+
+\begin{bsp}{Project Selection: Flussnetzwerk}
+	Sei $P' = \{a,b,c,d,e\}$ eine Projektmenge mit $a \prec b,\, a \prec c,\, a \prec d$ und $ d \prec c$. Außerdem sei $w_a = 3, \, w_b = -2, \, w_c = 6, \, w_d = -4, \, w_e = 2$. Das Flussnetzwerk von $P'$ in der min-cut-Formulierung sieht dann wie folgt aus:
+	
+	\begin{center}
+		\begin{tikzpicture}
+		\node[draw,circle,minimum size=5mm] (a) at (4,0) {$a$};
+		\node[draw,circle,minimum size=5mm] (b) at (2.5,0) {$b$};
+		\node[draw,circle,minimum size=5mm] (c) at (2.5,-2) {$c$};
+		\node[draw,circle,minimum size=5mm] (d) at (4,-2) {$d$};
+		\node[draw,circle,minimum size=5mm] (e) at (1.5,-1) {$e$};
+		
+		\node[draw,circle,minimum size=5mm] (s) at (0,-1) {$s$};
+		\node[draw,circle,minimum size=5mm] (t) at (5.5,-1) {$t$};
+		
+		\draw[->] (b) -- (a)  node[midway, below] {$\infty$} ;
+		\draw[->] (c) -- (d) node[midway, above] {$\infty$};
+		\draw[->] (d) -- (a) node[midway, left] {$\infty$};
+		
+		\draw[->] (s) to[bend left=60] node[midway,above right] {$3$} (a)  ;
+		\draw[->] (s) to[bend right=30] node [below,midway]  {$6$} (c)  ;
+		\draw[->] (s) -- (e) node[midway, above] {$2$} ;
+		\draw[->] (b) to[bend left=60] node[above right] {$2$} (t)  ;
+		\draw[->] (d) -- node[below right] {$4$} (t)  ;
+		
+		\end{tikzpicture}
+	\end{center}
+\end{bsp}
+
+Als letzter Schritt bleibt nur noch, aus diesem Flussnetzwerk eine zulässige Projektauswahl zu erhalten, die den Gewinn maximiert. 
+
 
 \section{Matching Markets}
 
