@@ -12,9 +12,10 @@ Das Dokument ist noch im Aufbau und wird sich unter Umständen noch ein wenig ve
   - 5.3.2: Algo EFTF Lesbarkeit erhöht
   - 6.1.1: Def induzierter Teilgraph: Lesbarkeit erhöht
   - 7.4.1: Fixed Typo in Spacing Definition
+- 13.03.2020 - Version 1.1.1:
+  - Kapitel 9 hinzugefügt
 - TBA - Version 1.2:
-  - 4.1: Typo
-  - Kapitel 9 - Project Selection hinzugefügt
+  - Kapitel 9 - 11 hinzugefügt
 
 
 

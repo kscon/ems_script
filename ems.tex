@@ -1723,7 +1723,7 @@ Um nun eine Gewinn-maximierende Auswahl an Projekten zu finden, erweitern wir di
 Angewendet auf unser vorheriges Beispiel $P'$, wobei nun auch die Revenues definiert werden, ergibt sich also folgendes Flussnetzwerk:
 
 \begin{bsp}{Project Selection: Flussnetzwerk}
-	Sei $P' = \{a,b,c,d,e\}$ eine Projektmenge mit $a \prec b,\, a \prec c,\, a \prec d$ und $ d \prec c$. Außerdem sei $w_a = 3, \, w_b = -2, \, w_c = 6, \, w_d = -4, \, w_e = 2$. Das Flussnetzwerk von $P'$ in der min-cut-Formulierung sieht dann wie folgt aus:
+	Sei $P' = \{a,b,c,d,e\}$ eine Projektmenge mit $a \prec b,\, a \prec c,\, a \prec d$ und $ d \prec c$. Außerdem sei $w_a = -3, \, w_b = 5, \, w_c = 3, \, w_d = -4, \, w_e = 2$. Das Flussnetzwerk von $P'$ in der min-cut-Formulierung sieht dann wie folgt aus:
 	
 	\begin{center}
 		\begin{tikzpicture}
@@ -1736,14 +1736,14 @@ Angewendet auf unser vorheriges Beispiel $P'$, wobei nun auch die Revenues defin
 		\node[draw,circle,minimum size=5mm] (s) at (0,-1) {$s$};
 		\node[draw,circle,minimum size=5mm] (t) at (5.5,-1) {$t$};
 		
-		\draw[->] (b) -- (a)  node[midway, below] {$\infty$} ;
-		\draw[->] (c) -- (d) node[midway, above] {$\infty$};
+		\draw[->] (b) -- (a)  node[midway, above] {$\infty$} ;
+		\draw[->] (c) -- (d) node[midway, below] {$\infty$};
 		\draw[->] (d) -- (a) node[midway, left] {$\infty$};
 		
-		\draw[->] (s) to[bend left=60] node[midway,above right] {$3$} (a)  ;
-		\draw[->] (s) to[bend right=30] node [below,midway]  {$6$} (c)  ;
+		\draw[->] (s) to[bend left=30] node[midway,above right] {$5$} (b)  ;
+		\draw[->] (s) to[bend right=30] node [below,midway]  {$3$} (c)  ;
 		\draw[->] (s) -- (e) node[midway, above] {$2$} ;
-		\draw[->] (b) to[bend left=60] node[above right] {$2$} (t)  ;
+		\draw[->] (a) -- node[above right] {$3$} (t)  ;
 		\draw[->] (d) -- node[below right] {$4$} (t)  ;
 		
 		\end{tikzpicture}
@@ -1756,37 +1756,44 @@ Als letzter Schritt bleibt nur noch, aus diesem Flussnetzwerk eine zulässige Pr
 	$S \subseteq P$  ist eine zulässige Projektauswahl mit maximalem Revenue $\sum_{j \in S} w_j  \Leftrightarrow S \cup \{s \}$ ist ein s-t Schnitt in der Flussnetzwerk-Konstruktion mit minimaler Kapazität.
 \end{theo}
 
-Warum funktioniert diese Konstruktion und berechnet eine optimale Projektauswahl? Dazu schaut man sich erneut das Beispiel an (in dem schon ein maximale Fluss bestimmt wurde):
+Warum funktioniert diese Konstruktion und berechnet eine optimale Projektauswahl? Dazu schaut man sich erneut das Beispiel an (in dem schon ein maximaler Fluss bestimmt wurde):
 
 \begin{bsp}{Project Selection: Flussnetzwerk}
-	Sei $P' = \{a,b,c,d,e\}$ eine Projektmenge mit $a \prec b,\, a \prec c,\, a \prec d$ und $ d \prec c$. Außerdem sei $w_a = 3, \, w_b = -2, \, w_c = 6, \, w_d = -4, \, w_e = 2$. Das Flussnetzwerk von $P'$ in der min-cut-Formulierung und die zugehörige Berechnung des minimalen Schnittes sehen dann wie folgt aus:
+	Sei $P' = \{a,b,c,d,e\}$ eine Projektmenge mit $a \prec b,\, a \prec c,\, a \prec d$ und $ d \prec c$. Außerdem sei $w_a = -3, \, w_b = 5, \, w_c = 3, \, w_d = -4, \, w_e = 2$. Das Flussnetzwerk von $P'$ in der min-cut-Formulierung und die zugehörige Berechnung des minimalen Schnittes sehen dann wie folgt aus:
 	
 	\begin{center}
 		\begin{tikzpicture}
-		\node[draw,circle,minimum size=5mm] (a) at (4,0) {$a$};
-		\node[draw,circle,minimum size=5mm] (b) at (2.5,0) {$b$};
+		\node[draw,circle,minimum size=5mm,fill={rgb:red,2;green,15;blue,2}] (a) at (4.5,0) {$a$};
+		\node[draw,circle,minimum size=5mm,fill={rgb:red,2;green,15;blue,2}] (b) at (2.5,0) {$b$};
 		\node[draw,circle,minimum size=5mm] (c) at (2.5,-2) {$c$};
-		\node[draw,circle,minimum size=5mm] (d) at (4,-2) {$d$};
-		\node[draw,circle,minimum size=5mm] (e) at (1.5,-1) {$e$};
+		\node[draw,circle,minimum size=5mm] (d) at (4.5,-2) {$d$};
+		\node[draw,circle,minimum size=5mm,fill={rgb:red,2;green,15;blue,2}] (e) at (1.5,-1) {$e$};
 		
-		\node[draw,circle,minimum size=5mm] (s) at (0,-1) {$s$};
-		\node[draw,circle,minimum size=5mm] (t) at (5.5,-1) {$t$};
+		\node[draw,circle,minimum size=5mm,fill={rgb:red,10;green,10;blue,-10}] (s) at (0,-1) {$s$};
+		\node[draw,circle,minimum size=5mm] (t) at (6,-1) {$t$};
 		
-		\draw[->] (b) -- (a)  node[midway, below] {$\infty$} ;
-		\draw[->] (c) -- (d) node[midway, above] {$\infty$};
-		\draw[->] (d) -- (a) node[midway, left] {$\infty$};
+		\draw[->] (b) -- (a)  node[midway, above] {${\color{blue}3}/\infty$} ;
+		\draw[->] (c) -- (d) node[midway, below] {${\color{blue}3}/\infty$};
+		\draw[->] (d) -- (a) node[midway, left] {${\color{blue}0}/\infty$};
 		
-		\draw[->] (s) to[bend left=60] node[midway,above right] {$3$} (a)  ;
-		\draw[->] (s) to[bend right=30] node [below,midway]  {$6$} (c)  ;
-		\draw[->] (s) -- (e) node[midway, above] {$2$} ;
-		\draw[->] (b) to[bend left=60] node[above right] {$2$} (t)  ;
-		\draw[->] (d) -- node[below right] {$4$} (t)  ;
+		\draw[->] (s) to[bend left=30] node[midway,above right] {${\color{blue}3}/5$} (b)  ;
+		\draw[->] (s) to[bend right=30] node [below,midway]  {${\color{blue}3}/3$} (c)  ;
+		\draw[->] (s) -- (e) node[midway, above] {${\color{blue}0}/2$} ;
+		\draw[->] (a) -- node[above right] {${\color{blue}3}/3$} (t)  ;
+		\draw[->] (d) -- node[below right] {${\color{blue}3}/4$} (t)  ;
+		
+		\draw[thick, color=red] plot [smooth,tension=0.75] coordinates{(5.25,0.5) (4.75, -1) (2, -1.5) (0,-2)};
 		
 		\end{tikzpicture}
+		
+		In rot ist dabei der minimale Schnitt und in Grün die daraus folgende optimale Projektauswahl zu sehen.
 	\end{center}
 \end{bsp}
 
+Man kann sich den Fluss in diesem Netzwerk grundsätzlich als zu investierende Kosten vorstellen: Das Projekt $c$ bringt $5$ Geldeinheiten Profit, weswegen die Kante $(s,c)$ mit Kapazität $5$ existiert. Es kann $c$ nur ausgewählt werden, wenn auch $d$ ausgewählt wird (durch die Kante $(c,d)$ ausgedrückt). Das Projekt $d$ hingegen verursacht Kosten in Höhe von $4$, dargestellt durch die Kante $(d,t)$ mit Kapazität $4$. Es fließen also Flusseinheiten von $s$ zu gewinnbringenden Knoten und von verlustbringenden Knoten zu $t$. Da $c$ uns $3$ Profit bringt, wählen wir das Projekt temporär einmal aus. Um nun aber zu schauen, ob die Abhängigkeiten von $c$ eventuell insgesamt zu Verlust führen würden, versuchen wir also, den maximalen Fluss zu bestimmen, der über die Kante $(s,c)$ laufen kann. Wenn die Kante voll ausgelastet sein sollte (wie oben im Beispiel), heißt das, dass alle drei Einheiten an Profit von $c$ aus zu $t$ fließen können, also das sämtlicher Profit von $c$ durch die Abhängigkeiten von $c$ ``aufgebraucht'' wurde, denn es kann ja nur von Projekten, die Verlust bringen etwas zu $t$ fließen (oben $3$ Einheiten über $(d,t)$, die ursprünglich von $c$ kommen. Die Wahl von $c$ würde also durch die Kosten von $d$ nicht zu Profit führen.
 
+Der Knoten $b$ stellt dabei das gleiche Szenario dar, jedoch sind die Kosten durch die Wahl von $b$ kleiner als der Profit durch $b$, weswegen hier $5-3 = 2$ Profit durch $b$ verursacht werden. Als letztes bleibt das Projekt $e$, das keinerlei Abhängigkeiten hat, weswegen auch $2-0= 2$ Profit durch die Wahl von $e$ verursacht werden. 
+ 
 \section{Matching Markets}
 
 ... \textit{folgt zeitnah} ...
