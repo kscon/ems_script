@@ -1750,7 +1750,41 @@ Angewendet auf unser vorheriges Beispiel $P'$, wobei nun auch die Revenues defin
 	\end{center}
 \end{bsp}
 
-Als letzter Schritt bleibt nur noch, aus diesem Flussnetzwerk eine zulässige Projektauswahl zu erhalten, die den Gewinn maximiert. 
+Als letzter Schritt bleibt nur noch, aus diesem Flussnetzwerk eine zulässige Projektauswahl zu erhalten, die den Gewinn maximiert. Das erreichen wir, wie die Flusskonstruktion ja schon andeutet, in dem wir in einem Flussnetzwerk den Maximal Fluss bestimmen und daraus den minimalen Schnitt ablesen. Die optimale zulässige Projektauswahl ist dann die Menge $S$, die den Schnitt induziert (ohne den Hilfsknoten $s$). Für die Optimalität gilt dann:
+
+\begin{theo}{Optimale Projektauswahl via Min-Cut Berechnung}
+	$S \subseteq P$  ist eine zulässige Projektauswahl mit maximalem Revenue $\sum_{j \in S} w_j  \Leftrightarrow S \cup \{s \}$ ist ein s-t Schnitt in der Flussnetzwerk-Konstruktion mit minimaler Kapazität.
+\end{theo}
+
+Warum funktioniert diese Konstruktion und berechnet eine optimale Projektauswahl? Dazu schaut man sich erneut das Beispiel an (in dem schon ein maximale Fluss bestimmt wurde):
+
+\begin{bsp}{Project Selection: Flussnetzwerk}
+	Sei $P' = \{a,b,c,d,e\}$ eine Projektmenge mit $a \prec b,\, a \prec c,\, a \prec d$ und $ d \prec c$. Außerdem sei $w_a = 3, \, w_b = -2, \, w_c = 6, \, w_d = -4, \, w_e = 2$. Das Flussnetzwerk von $P'$ in der min-cut-Formulierung und die zugehörige Berechnung des minimalen Schnittes sehen dann wie folgt aus:
+	
+	\begin{center}
+		\begin{tikzpicture}
+		\node[draw,circle,minimum size=5mm] (a) at (4,0) {$a$};
+		\node[draw,circle,minimum size=5mm] (b) at (2.5,0) {$b$};
+		\node[draw,circle,minimum size=5mm] (c) at (2.5,-2) {$c$};
+		\node[draw,circle,minimum size=5mm] (d) at (4,-2) {$d$};
+		\node[draw,circle,minimum size=5mm] (e) at (1.5,-1) {$e$};
+		
+		\node[draw,circle,minimum size=5mm] (s) at (0,-1) {$s$};
+		\node[draw,circle,minimum size=5mm] (t) at (5.5,-1) {$t$};
+		
+		\draw[->] (b) -- (a)  node[midway, below] {$\infty$} ;
+		\draw[->] (c) -- (d) node[midway, above] {$\infty$};
+		\draw[->] (d) -- (a) node[midway, left] {$\infty$};
+		
+		\draw[->] (s) to[bend left=60] node[midway,above right] {$3$} (a)  ;
+		\draw[->] (s) to[bend right=30] node [below,midway]  {$6$} (c)  ;
+		\draw[->] (s) -- (e) node[midway, above] {$2$} ;
+		\draw[->] (b) to[bend left=60] node[above right] {$2$} (t)  ;
+		\draw[->] (d) -- node[below right] {$4$} (t)  ;
+		
+		\end{tikzpicture}
+	\end{center}
+\end{bsp}
 
 
 \section{Matching Markets}
